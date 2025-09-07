@@ -6,7 +6,7 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 """
 from django.contrib import admin
 from django.urls import include, path
-from django.conf import settings   # ✅ import settings
+from django.conf import settings
 from django.conf.urls.static import static
 from . import views
 
@@ -20,5 +20,8 @@ urlpatterns = [
 ]
 
 # Serve static files when DEBUG is False (for local testing only).
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 if not settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
