@@ -9,7 +9,7 @@ SECRET_KEY = os.getenv(
     "DJANGO_SECRET_KEY",
     "dev-only-insecure-key-change-me"  # use env var in real deployments
 )
-DEBUG = False
+DEBUG = True
 
 # Flat list (no nested list)
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
@@ -42,7 +42,7 @@ ROOT_URLCONF = "myshop.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],  # optional: add if you’ll use project-level templates
+        "DIRS": [],#BASE_DIR / "templates"],  # optional: add if you’ll use project-level templates
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

@@ -1,7 +1,5 @@
-# shop/models.py
-from __future__ import annotations
 from django.db import models
-from django.urls import reverse
+from django.urls import reverse   # ← make sure this import exists
 
 class Category(models.Model):
     name = models.CharField(max_length=200, db_index=True)
@@ -10,14 +8,13 @@ class Category(models.Model):
     class Meta:
         ordering = ['name']
         indexes = [models.Index(fields=['name'])]
-        verbose_name = 'category'
-        verbose_name_plural = 'categories'
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):
         return reverse('shop:product_list_by_category', args=[self.slug])
+
 
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
@@ -38,7 +35,7 @@ class Product(models.Model):
             models.Index(fields=['-created']),
         ]
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):

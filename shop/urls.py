@@ -1,6 +1,6 @@
 # shop/urls.py
 from django.urls import path
-from . import views   # 👈 this line is missing in your file
+from . import views
 
 app_name = "shop"
 

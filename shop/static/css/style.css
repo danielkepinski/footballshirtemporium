@@ -1,0 +1,40 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+.container {
+  max-width: 800px;
+  margin: auto;
+}
+
+/* ===== Simple, clean base.css for the shop ===== */
+
+/* Variables (fallbacks for older browsers) */
+:root{
+  --bg: #0f1115;
+  --panel: #171a21;
+  --panel-2: #1f2430;
+  --text: #e7e9ee;
+  --muted: #a9b0bc;
+  --brand: #5b9cff;
+  --brand-2: #7bd389;
+  --danger: #ff6b6b;
+  --border: #2a2f3a;
+  --shadow: 0 6px 20px rgba(0,0,0,.25);
+}
+
+/* Reset-ish */
+*{ box-sizing: border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  color: var(--text);
+  background: radial-gradient(1200px 800px at 20% -10%, #162036 0%, #0f1115 60%);
+}
+
+/* Layout */
+#header{
+  display:flex; align-items:center; gap:16px;
+  padding:18px 22px;
+  bac
