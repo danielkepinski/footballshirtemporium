@@ -9,7 +9,7 @@ SECRET_KEY = os.getenv(
     "DJANGO_SECRET_KEY",
     "dev-only-insecure-key-change-me"  # use env var in real deployments
 )
-DEBUG = True
+DEBUG = False
 
 # Flat list (no nested list)
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
