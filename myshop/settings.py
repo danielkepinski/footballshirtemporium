@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "shop.apps.ShopConfig",
     "cart.apps.CartConfig",
     'orders.apps.OrdersConfig',
+    'payment.apps.PaymentConfig',
 ]
 
 MIDDLEWARE = [
@@ -90,3 +91,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 #cart
 CART_SESSION_ID = 'cart'
+
+#stripe settings
+STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY', default="")
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY', default="")
+STRIPE_API_VERSION = '2024-04-10'
