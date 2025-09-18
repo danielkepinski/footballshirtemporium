@@ -5,12 +5,14 @@
 
 {% block content %}
   <h1>Order summary</h1>
-  {# show any Stripe error from the view #}
+
+  {# show any Stripe error passed by the view #}
   {% if stripe_error %}
     <p style="color:#ff6b6b; padding:10px; border:1px solid #ff6b6b;">
       Stripe error: {{ stripe_error }}
     </p>
   {% endif %}
+
   <table class="cart">
     <thead>
       <tr>
@@ -23,28 +25,27 @@
     </thead>
     <tbody>
       {% for item in order.items.all %}
-        <tr class="row{% cycle "1" "2" %}">
+        <tr class="row{% cycle '1' '2' %}">
           <td>
-            <img src="{% if item.product.image %}{{ item.product.image.url }}
-            {% else %}{% static "img/no_image.png" %}{% endif %}">
+            <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}">
           </td>
           <td>{{ item.product.name }}</td>
-          <td class="num">${{ item.price }}</td>
+          <td class="num">£{{ item.price }}</td>
           <td class="num">{{ item.quantity }}</td>
-          <td class="num">${{ item.get_cost }}</td>
+          <td class="num">£{{ item.get_cost }}</td>
         </tr>
       {% endfor %}
       <tr class="total">
         <td colspan="4">Total</td>
-        <td class="num">${{ order.get_total_cost }}</td>
+        <td class="num">£{{ order.get_total_cost }}</td>
       </tr>
     </tbody>
   </table>
-  
+
   <form method="post" action="{% url 'payment:process' %}" style="margin-top:16px;">
-  {% csrf_token %}
-  <button type="submit" class="btn" style="padding:12px 18px; font-weight:700;">
-    Pay now
-  </button>
-</form>
+    {% csrf_token %}
+    <button type="submit" class="btn" style="padding:12px 18px; font-weight:700;">
+      Pay now
+    </button>
+  </form>
 {% endblock %}
