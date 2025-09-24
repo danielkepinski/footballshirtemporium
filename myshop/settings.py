@@ -8,12 +8,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY
 SECRET_KEY = os.getenv(
     "DJANGO_SECRET_KEY",
-    "dev-only-insecure-key-change-me"  # use env var in real deployments
+    "dev-only-insecure-key-change-me"  # (reminder to use env var in real deployments
 )
-DEBUG = True
-
-# Flat list (no nested list)
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+DEBUG = config("DEBUG", cast=bool, default=True)
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1,localhost").split(",")
 
 # APPS
 INSTALLED_APPS = [
@@ -93,6 +91,17 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CART_SESSION_ID = 'cart'
 
 #stripe settings
-STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY', default="")
-STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY', default="")
-STRIPE_API_VERSION = '2024-04-10'
+STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY", default="").strip()
+STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="").strip()
+STRIPE_API_VERSION = "2024-04-10"
+STRIPE_WEBHOOK_SECRET = config('STRIPE_WEBHOOK_SECRET').strip()
+
+
+#celery
+CELERY_BROKER_URL = config("CELERY_BROKER_URL", default="amqp://guest:guest@localhost:5672//")
+CELERY_RESULT_BACKEND = config("CELERY_RESULT_BACKEND", default="rpc://")
+#CELERY_TASK_ALWAYS_EAGER = False
+
+#in test use 
+CELERY_TASK_ALWAYS_EAGER = True
+CELERY_TASK_EAGER_PROPAGATES = True
