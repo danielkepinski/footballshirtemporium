@@ -1,0 +1,20 @@
+# env files
+.env
+.env.*
+*.env
+*.env.*
+
+# Django / Python
+__pycache__/
+*.pyc
+db.sqlite3
+media/
+staticfiles/
+
+# Virtualenv
+env/
+venv/
+
+#celery
+CELERY_BROKER_URL=amqp://guest:guest@localhost:5672//
+CELERY_RESULT_BACKEND=rpc://

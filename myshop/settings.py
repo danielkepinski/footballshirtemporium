@@ -105,3 +105,6 @@ CELERY_RESULT_BACKEND = config("CELERY_RESULT_BACKEND", default="rpc://")
 #in test use 
 CELERY_TASK_ALWAYS_EAGER = True
 CELERY_TASK_EAGER_PROPAGATES = True
+
+# Email (dev)
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
