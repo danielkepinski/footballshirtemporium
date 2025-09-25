@@ -11,6 +11,7 @@ from .tasks import payment_completed
 def stripe_webhook(request):
     payload = request.body
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    if not sig_header: return HttpResponse(status=400)
     event = None
 
     try:
@@ -32,7 +33,8 @@ def stripe_webhook(request):
         ):
             try:
                 order = Order.objects.get(
-                    id=session.client_reference_id
+                    id=session.client_reference_id=str(order.id),
+                    metadata={"order_id": str(order.id)}
                 )
             except Order.DoesNotExist:
                 return HttpResponse(status=404)
