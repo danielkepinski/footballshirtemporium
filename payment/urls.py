@@ -1,6 +1,6 @@
 from django.urls import path
-
-from . import views, webhooks
+from . import views
+from .webhook import stripe_webhook 
 
 app_name = 'payment'
 

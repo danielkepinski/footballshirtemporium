@@ -43,13 +43,12 @@ def payment_process(request):
             session = stripe.checkout.Session.create(**session_data)
         except Exception as e:
             return render(
-                request, "payment/process.html",
-                {"order": order, "stripe_error": str(e)}
-            )
+                request,
+                "payment/process.html",
+                {"order": order, "stripe_error": str(e)},
+        )
 
-        return redirect(session.url, code=303)
-
-    return render(request, "payment/process.html", {"order": order})
+    return redirect(session.url, code=303)
 
 # ↓ Add these two simple views below
 def payment_completed(request):
