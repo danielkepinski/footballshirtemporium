@@ -6,9 +6,9 @@
 {% block content %}
   <h1>Order summary</h1>
 
-  {# show any Stripe error passed by the view #}
+  {# Any Stripe error passed by the view #}
   {% if stripe_error %}
-    <p style="color:#ff6b6b; padding:10px; border:1px solid #ff6b6b;">
+    <p style="color:#b00020; padding:10px; border:1px solid #b00020; background:#fff5f5;">
       Stripe error: {{ stripe_error }}
     </p>
   {% endif %}
@@ -27,7 +27,11 @@
       {% for item in order.items.all %}
         <tr class="row{% cycle '1' '2' %}">
           <td>
-            <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}">
+            <img
+              src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
+              alt="{{ item.product.name }}"
+              width="80" height="80"
+            />
           </td>
           <td>{{ item.product.name }}</td>
           <td class="num">£{{ item.price }}</td>
@@ -44,8 +48,32 @@
 
   <form method="post" action="{% url 'payment:process' %}" style="margin-top:16px;">
     {% csrf_token %}
-    <button type="submit" class="btn" style="padding:12px 18px; font-weight:700;">
-      Pay now
-    </button>
+    {% if order.items.count %}
+      <button id="pay-btn" type="submit" class="btn" style="padding:12px 18px; font-weight:700;">
+        Pay now
+      </button>
+    {% else %}
+      <button type="button" class="btn" disabled title="Your order has no items">
+        Pay now
+      </button>
+    {% endif %}
   </form>
+
+  {# optional: show publishable key for future Stripe.js use #}
+  {% if STRIPE_PUBLISHABLE_KEY %}
+    <p style="margin-top:8px;">
+      <small>Using Stripe (test mode). <!-- key is available server-side; not displayed here --></small>
+    </p>
+  {% endif %}
+
+  <script>
+    // Small UX touch: disable button on submit to avoid double posts
+    (function () {
+      const form = document.querySelector('form[method="post"]');
+      form?.addEventListener('submit', () => {
+        const btn = document.getElementById('pay-btn');
+        if (btn) { btn.disabled = true; btn.textContent = 'Redirecting to Stripe…'; }
+      });
+    })();
+  </script>
 {% endblock %}

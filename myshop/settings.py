@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY
 SECRET_KEY = os.getenv(
     "DJANGO_SECRET_KEY",
-    "dev-only-insecure-key-change-me"  # (reminder to use env var in real deployments
+    "dev-only-insecure-key-change-me"  # reminder to use env var in real deployments
 )
 DEBUG = config("DEBUG", cast=bool, default=True)
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1,localhost").split(",")
@@ -42,7 +42,7 @@ ROOT_URLCONF = "myshop.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],#BASE_DIR / "templates"],  # optional: add if you’ll use project-level templates
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -108,3 +108,44 @@ CELERY_TASK_EAGER_PROPAGATES = True
 
 # Email (dev)
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+# --- Logging ---
+import logging
+
+LOG_LEVEL = "DEBUG" if DEBUG else "INFO"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "simple": {
+            "format": "[{levelname}] {name}: {message}",
+            "style": "{",
+        },
+        "verbose": {
+            "format": "[{levelname}] {asctime} {name} | {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+    },
+    "loggers": {
+        # Your apps
+        "payment": {"handlers": ["console"], "level": LOG_LEVEL, "propagate": False},
+        "orders":  {"handlers": ["console"], "level": LOG_LEVEL, "propagate": False},
+        "cart":    {"handlers": ["console"], "level": LOG_LEVEL, "propagate": False},
+        "shop":    {"handlers": ["console"], "level": LOG_LEVEL, "propagate": False},
+
+        # Root logger (everything else)
+        "": {"handlers": ["console"], "level": LOG_LEVEL},
+        
+        # Optional extras (uncomment when needed)
+        # "django.request": {"handlers": ["console"], "level": "WARNING", "propagate": False},
+        # "django.db.backends": {"handlers": ["console"], "level": "WARNING", "propagate": False},  # SQL logs
+    },
+}
