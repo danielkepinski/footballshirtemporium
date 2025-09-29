@@ -29,5 +29,26 @@
       {% block content %}
       {% endblock %}
     </div>
+    <section class="hero container">
+  <h1>Nostalgia. Your Way.</h1>
+  <p>Re-live your favourite memories!</p>
+  <a class="btn" href="{% url 'shop:product_list' %}">Shop now</a>
+</section>
+<section class="container mt-4">
+  <div class="grid">
+    {% for product in products %}
+      <a class="card" href="{{ product.get_absolute_url }}">
+        <img class="card__img" src="{{ product.image.url if product.image else static('img/no_image.png') }}" alt="{{ product.name }}">
+        <div class="card__body">
+          <h3 class="card__title">{{ product.name }}</h3>
+          <div class="card__meta">
+            <span>£{{ product.price }}</span>
+            {% if product.is_on_sale %}<span class="badge">Sale</span>{% endif %}
+          </div>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</section>
   </body>
 </html>
