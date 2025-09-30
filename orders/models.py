@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -12,11 +13,17 @@ class Order(models.Model):
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
     stripe_id = models.CharField(max_length=250, blank=True, null=True)
-
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name="orders",
+    )
     class Meta:
         ordering = ['-created']
         indexes = [
             models.Index(fields=['-created']),
+             models.Index(fields=['paid']),
         ]
 
     def __str__(self):

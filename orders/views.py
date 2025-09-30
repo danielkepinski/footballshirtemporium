@@ -14,7 +14,7 @@ from .tasks import order_created
 def order_create(request):
     cart = Cart(request)
 
-    # optional: guard against empty cart
+    # guard against empty cart
     if not cart:
         return redirect("cart:cart_detail")
 
@@ -22,13 +22,17 @@ def order_create(request):
         form = OrderCreateForm(request.POST)
         if form.is_valid():
             order = form.save()
-            for item in cart:
-                OrderItem.objects.create(
+            if request.user.is_authenticated:
+            order.user = request.user
+            order.save(update_fields=["user"])
+                for item in cart:
+                    OrderItem.objects.create(
                     order=order,
                     product=item["product"],
                     price=item["price"],
                     quantity=item["quantity"],
                 )
+
             # clear the cart
             cart.clear()
 
