@@ -109,6 +109,11 @@ CELERY_TASK_EAGER_PROPAGATES = True
 # Email (dev)
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+#login
+LOGIN_REDIRECT_URL = "account:dashboard"
+LOGOUT_REDIRECT_URL = "shop:product_list"
+LOGIN_URL = "login"  
+
 
 # --- Logging ---
 import logging
