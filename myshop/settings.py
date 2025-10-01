@@ -142,7 +142,6 @@ LOGGING = {
         },
     },
     "loggers": {
-        # Your apps
         "payment": {"handlers": ["console"], "level": LOG_LEVEL, "propagate": False},
         "orders":  {"handlers": ["console"], "level": LOG_LEVEL, "propagate": False},
         "cart":    {"handlers": ["console"], "level": LOG_LEVEL, "propagate": False},
