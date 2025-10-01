@@ -5,6 +5,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("", shop_views.home, name="home"), #home with only hero/product grid
+    path("shop/", include(("shop.urls", "shop"), namespace="shop")), #shop page (product list etc)
     path("cart/", include(("cart.urls", "cart"), namespace="cart")),
     path("orders/", include(("orders.urls", "orders"), namespace="orders")),
     path("payment/", include(("payment.urls", "payment"), namespace="payment")),  
