@@ -8,9 +8,6 @@
     <link href="{% static 'css/site.css' %}" rel="stylesheet">
   </head>
   <body>
-
-    <div class="announce">BUY 2 SAVE 10% — USE CODE: BUY2SAVE10</div>
-
     <header class="site-header">
       <div class="container nav">
         <a href="{% url 'shop:product_list' %}" class="brand">Football Shirt Emporium</a>
@@ -42,41 +39,47 @@
       </div>
     </header>
 
-    <main class="container" style="padding: 20px 0;">
-      {% block content %}{% endblock %}
-
-      {# Show hero + grid only on pages that pass `products` (your product list view) #}
-      {% if products %}
-        <section class="hero">
+    {# --- HERO FIRST (only when a view asks for it) --- #}
+    {% if show_hero or products %}
+      <section class="hero">
+        <div class="hero__media">
+          <img src="{% static 'img/hero.jpg' %}" alt="Selection of classic retro football shirts">
+        </div>
+        <div class="hero__inner">
           <h1>Nostalgia. Your Way.</h1>
           <p>Re-live your favourite memories!</p>
           <a class="btn" href="{% url 'shop:product_list' %}">Shop now</a>
-        </section>
+        </div>
+      </section>
+    {% endif %}
 
-        <section class="mt-4">
-          <div class="grid">
-            {% for product in products %}
-              <a class="card" href="{{ product.get_absolute_url }}">
-                <img
-                  class="card__img"
-                  src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
-                  alt="{{ product.name }}"
-                >
-                <div class="card__body">
-                  <h3 class="card__title">{{ product.name }}</h3>
-                  <div class="card__meta">
-                    <span>£{{ product.price }}</span>
-                    {# add badge later if you add a field #}
-                    {# {% if product.is_on_sale %}<span class="badge">Sale</span>{% endif %} #}
-                  </div>
+    {# --- PRODUCT GRID SECOND (only on product list pages that pass `products`) --- #}
+    {% if products %}
+      <section class="container mt-4">
+        <div class="grid">
+          {% for product in products %}
+            <a class="card" href="{{ product.get_absolute_url }}">
+              <img
+                class="card__img"
+                src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
+                alt="{{ product.name }}"
+              >
+              <div class="card__body">
+                <h3 class="card__title">{{ product.name }}</h3>
+                <div class="card__meta">
+                  <span>£{{ product.price }}</span>
                 </div>
-              </a>
-            {% empty %}
-              <p>No products yet.</p>
-            {% endfor %}
-          </div>
-        </section>
-      {% endif %}
+              </div>
+            </a>
+          {% empty %}
+            <p>No products yet.</p>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
+    <main class="container" style="padding: 20px 0;">
+      {% block content %}{% endblock %}
     </main>
 
     <footer class="site-footer">
