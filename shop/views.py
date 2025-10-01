@@ -3,8 +3,10 @@ from django.shortcuts import get_object_or_404, render
 from cart.forms import CartAddProductForm
 from .models import Category, Product
 
+from django.shortcuts import render
+
 def home(request):
-    return render(request, "shop/home.html", {show_hero: True})
+    return render(request, "shop/home.html", {"show_hero": True})
 
 def product_list(request, category_slug=None):
     category = None
@@ -32,6 +34,6 @@ def product_detail(request, id, slug):
         "shop/product/detail.html",
         {
             "product": product,
-            "cart_product_form": cart_product_form,  # ← use the instance you created
+            "cart_product_form": cart_product_form,
         },
     )
