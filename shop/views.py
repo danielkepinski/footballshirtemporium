@@ -3,6 +3,8 @@ from django.shortcuts import get_object_or_404, render
 from cart.forms import CartAddProductForm
 from .models import Category, Product
 
+def home(request):
+    return render(request, "shop/home.html", {show_hero: True})
 
 def product_list(request, category_slug=None):
     category = None
