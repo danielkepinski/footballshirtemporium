@@ -39,8 +39,8 @@
       </div>
     </header>
 
-    {# --- HERO FIRST (only when a view asks for it) --- #}
-    {% if show_hero or products %}
+    {# --- HERO SECTION--- #}
+    {% if show_hero %}
       <section class="hero">
         <div class="hero__media">
           <img src="{% static 'img/hero.jpg' %}" alt="Selection of classic retro football shirts">
@@ -49,31 +49,6 @@
           <h1>Nostalgia. Your Way.</h1>
           <p>Re-live your favourite memories!</p>
           <a class="btn" href="{% url 'shop:product_list' %}">Shop now</a>
-        </div>
-      </section>
-    {% endif %}
-
-    {# --- PRODUCT GRID SECOND (only on product list pages that pass `products`) --- #}
-    {% if products %}
-      <section class="container mt-4">
-        <div class="grid">
-          {% for product in products %}
-            <a class="card" href="{{ product.get_absolute_url }}">
-              <img
-                class="card__img"
-                src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
-                alt="{{ product.name }}"
-              >
-              <div class="card__body">
-                <h3 class="card__title">{{ product.name }}</h3>
-                <div class="card__meta">
-                  <span>£{{ product.price }}</span>
-                </div>
-              </div>
-            </a>
-          {% empty %}
-            <p>No products yet.</p>
-          {% endfor %}
         </div>
       </section>
     {% endif %}
