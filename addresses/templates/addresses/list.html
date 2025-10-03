@@ -1,0 +1,27 @@
+{% extends "shop/base.html" %}
+{% block title %}My addresses{% endblock %}
+{% block content %}
+  <h1>My addresses</h1>
+  <p><a class="btn" href="{% url 'addresses:create' %}">Add address</a></p>
+
+  {% if addresses %}
+    <table class="cart">
+      <thead><tr><th>Name</th><th>Address</th><th>Default</th><th></th></tr></thead>
+      <tbody>
+        {% for a in addresses %}
+          <tr>
+            <td>{{ a.name }}</td>
+            <td>{{ a.line1 }}{% if a.line2 %}, {{ a.line2 }}{% endif %}, {{ a.city }}, {{ a.postal_code }}, {{ a.country }}</td>
+            <td>{{ a.is_default|yesno:"Yes,No" }}</td>
+            <td>
+              <a class="btn btn--ghost" href="{% url 'addresses:update' a.pk %}">Edit</a>
+              <a class="btn btn--ghost" href="{% url 'addresses:delete' a.pk %}">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>You haven’t added any addresses yet.</p>
+  {% endif %}
+{% endblock %}

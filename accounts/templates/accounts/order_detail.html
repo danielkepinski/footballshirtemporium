@@ -1,0 +1,22 @@
+{% extends "shop/base.html" %}
+{% block title %}Order #{{ order.id }}{% endblock %}
+{% block content %}
+<h1>Order #{{ order.id }}</h1>
+<p><strong>Placed:</strong> {{ order.created|date:"Y-m-d H:i" }}</p>
+<p><strong>Status:</strong> {% if order.paid %}Paid{% else %}Unpaid{% endif %}</p>
+
+<table class="cart">
+  <thead><tr><th>Product</th><th>Price</th><th>Qty</th><th>Total</th></tr></thead>
+  <tbody>
+    {% for item in order.items.all %}
+      <tr>
+        <td>{{ item.product.name }}</td>
+        <td class="num">£{{ item.price }}</td>
+        <td class="num">{{ item.quantity }}</td>
+        <td class="num">£{{ item.get_cost }}</td>
+      </tr>
+    {% endfor %}
+    <tr class="total"><td colspan="3">Order total</td><td class="num">£{{ order.get_total_cost }}</td></tr>
+  </tbody>
+</table>
+{% endblock %}
