@@ -93,6 +93,7 @@ a{ color: inherit; text-decoration: none; }
   align-items:center;
   padding: clamp(24px, 5vw, 56px) 0;
   text-align:center;
+  object-fit: cover;
 }
 .hero__media img{
   width:100%;
@@ -168,3 +169,69 @@ margin-top: 56px; padding: 20px 0; border-top:1px solid var(--border); color: va
 .mt-2{ margin-top:8px; } .mt-3{ margin-top:12px; } .mt-4{ margin-top:16px; }
 .center{ text-align:center; }
 .hidden{ display:none !important; }
+
+
+/* ====== Responsive layout ====== */
+
+/* Large tablets / small laptops */
+@media (max-width: 1100px){
+  .grid{ grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Tablets */
+@media (max-width: 800px){
+  /* product list layout (sidebar + main) */
+  .container.product-layout{ grid-template-columns: 1fr; gap: 16px; }
+  .menu{ gap: 12px; }
+  .hero{ padding: 32px 0;
+         object-fit: cover; }
+}
+
+/* Phones */
+@media (max-width: 520px){
+  .grid{ grid-template-columns: 1fr; }
+  .brand__text{ font-size: 16px; }
+  .btn{ padding: 10px 14px; }
+  table.cart{ display:block; overflow-x:auto; white-space:nowrap; }
+  .site-header .nav{ gap: 10px; }
+}
+
+/* Very small phones */
+@media (max-width: 360px){
+  .brand__logo{ height: 32px; }
+  .brand__text{ font-size: 14px; }
+  .menu a{ font-size: 14px; }
+  .hero__inner h1{ font-size: clamp(20px, 7vw, 28px); }
+  .hero__inner p{ font-size: clamp(13px, 4.2vw, 16px); }
+  .card__title{ font-size: 14px; }
+}
+
+/* Ultra-narrow devices: ≤300px */
+@media (max-width: 300px){
+  /* collapse everything to fit comfortably */
+  .site-header .nav{ flex-wrap: wrap; gap: 8px; }
+  .brand{ gap: 6px; }
+  .brand__logo{ height: 26px; }
+  .brand__text{ display:none; }  /* keep just the logo to save space */
+  .menu a{ font-size: 12px; padding: 4px 6px; }
+
+  .hero{ padding: 20px 0; 
+         object-fit: cover; }
+  .hero__inner{ padding: 8px; }
+  .hero__inner h1{ font-size: 18px; line-height: 1.15; }
+  .hero__inner p{ font-size: 12px; }
+  .btn{ font-size: 12px; padding: 8px 10px; }
+
+  .grid{ grid-template-columns: 1fr; gap: 10px; }
+  .card__img{ border-radius: 8px; }
+  .card__title{ font-size: 13px; }
+  .card__meta{ font-size: 12px; }
+
+  /* tables scroll instead of breaking layout */
+  table.cart{ display:block; width:100%; overflow-x:auto; white-space:nowrap; }
+  table.cart th, table.cart td{ padding: 8px 6px; font-size: 12px; }
+
+  /* forms tighter */
+  form input, form select, form textarea{ font-size: 14px; padding: 8px; }
+  label{ font-size: 12px; }
+}
