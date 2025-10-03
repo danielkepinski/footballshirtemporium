@@ -5,22 +5,25 @@
     <meta charset="utf-8" />
     <title>{% block title %}My shop{% endblock %}</title>
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
-    <link href="{% static 'css/site.css' %}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Football Shirt Emporium - Your favourite classic football shirts
+    <meta name="keywords" content="football, shirt, retro, classic, vintage, soccer, kit" />>
 
      <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicons/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicons/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicons/favicon-16x16.png' %}">
-    
+
   </head>
   <body>
+    <!-- HEADER -->
     <header class="site-header">
       <div class="container nav">
         <a href="{% url 'home' %}" class="brand">
         <img src="{% static 'img/FSElogo.jpg' %}" alt="Football Shirt Emporium logo" class="brand__logo">
         <span class="brand__text">Football Shirt Emporium</span>
 </a>
-
+        <!--  NAV -->
         <nav class="menu">
           <a href="{% url 'shop:product_list' %}">Shop</a>
           <a href="{% url 'cart:cart_detail' %}">Cart</a>
@@ -31,7 +34,7 @@
             <a href="{% url 'login' %}">Log in</a>
           {% endif %}
         </nav>
-
+        <!-- CART -->
         <div class="cart" style="margin-left: 16px;">
           {% with total_items=cart|length %}
             {% if total_items > 0 %}
@@ -48,7 +51,7 @@
       </div>
     </header>
 
-    {# --- HERO SECTION--- #}
+    <!-- HERO SECTION -->
     {% if show_hero %}
       <section class="hero">
         <div class="hero__media">
@@ -56,7 +59,7 @@
         </div>
         <div class="hero__inner">
           <h1>Nostalgia. Your Way.</h1>
-          <p>Re-live your favourite memories!</p>
+          <p>Relive your favourite memories!</p>
           <a class="btn" href="{% url 'shop:product_list' %}">Shop now</a>
         </div>
       </section>
@@ -67,7 +70,7 @@
     </main>
 
     <footer class="site-footer">
-      <div class="container">© {{ now|date:"Y" }} Football Shirt Emporium</div>
+      <div class="container">© {{ now|date:"Y" }} Football Shirt Emporium by Daniel Kepinski</div>
     </footer>
   </body>
 </html>
