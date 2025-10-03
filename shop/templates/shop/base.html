@@ -6,11 +6,20 @@
     <title>{% block title %}My shop{% endblock %}</title>
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
     <link href="{% static 'css/site.css' %}" rel="stylesheet">
+
+     <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicons/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicons/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicons/favicon-16x16.png' %}">
+    
   </head>
   <body>
     <header class="site-header">
       <div class="container nav">
-        <a href="{% url 'home' %}" class="brand">Football Shirt Emporium</a>
+        <a href="{% url 'home' %}" class="brand">
+        <img src="{% static 'img/FSElogo.jpg' %}" alt="Football Shirt Emporium logo" class="brand__logo">
+        <span class="brand__text">Football Shirt Emporium</span>
+</a>
 
         <nav class="menu">
           <a href="{% url 'shop:product_list' %}">Shop</a>
