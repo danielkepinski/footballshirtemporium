@@ -1,0 +1,26 @@
+services:
+  web:
+    build: .
+    ports: ["8000:8000"]
+    env_file: .env
+    volumes: [".:/app"]
+    depends_on: [redis]
+  worker:
+    build: .
+    command: celery -A myshop worker -l info -P solo
+    env_file: .env
+    volumes: [".:/app"]
+    depends_on: [redis]
+  redis:
+    image: redis:7
+    ports: ["6379:6379"]
+  repos:
+  - repo: https://github.com/psf/black
+    rev: 24.8.0
+    hooks: [ { id: black, args: [--line-length=88] } ]
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks: [ { id: isort, args: [--profile=black, --filter-files] } ]
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.1.1
+    hooks: [ { id: flake8, additional_dependencies: [flake8-bugbear==24.4.26] } ]

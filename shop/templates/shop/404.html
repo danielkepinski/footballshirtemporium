@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Page not found{% endblock %}
+{% block content %}
+  <main class="container">
+    <h1>404 — Page not found</h1>
+    <p>Sorry, we can’t find the page you’re looking for.</p>
+    <p>
+      <a href="{% url 'shop:product_list' %}">Go back to the shop</a>
+      {% comment %}Swap the url above to your home route if different{% endcomment %}
+    </p>
+    {% if request.path %}
+      <p><small>Requested URL: <code>{{ request.path }}</code></small></p>
+    {% endif %}
+  </main>
+{% endblock %}

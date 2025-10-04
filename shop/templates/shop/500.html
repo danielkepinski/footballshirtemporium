@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Server error{% endblock %}
+{% block content %}
+  <main class="container">
+    <h1>500 — Something went wrong</h1>
+    <p>That’s on us. We’ve logged the error and we’re taking a look.</p>
+    <p><a href="{% url 'shop:product_list' %}">Back to safety</a></p>
+  </main>
+{% endblock %}
