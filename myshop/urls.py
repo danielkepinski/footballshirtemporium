@@ -14,7 +14,7 @@ urlpatterns = [
     path("cart/", include(("cart.urls", "cart"), namespace="cart")),
     path("orders/", include(("orders.urls", "orders"), namespace="orders")),
     path("payment/", include(("payment.urls", "payment"), namespace="payment")),
-    path("accounts/", include(("accounts.urls", "account"), namespace="account")),
+    path("accounts/", include(("accounts.urls", "accounts"), namespace="accounts")),
     path("accounts/", include("django.contrib.auth.urls")),
     path("addresses/", include("addresses.urls", namespace="addresses")),
 
