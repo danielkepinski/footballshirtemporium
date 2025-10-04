@@ -1,47 +1,38 @@
-from io import BytesIO
-
+# payment/tasks.py
 from celery import shared_task
+import logging
+from django.core.mail import send_mail
 from django.conf import settings
-from django.contrib.staticfiles import finders
-from django.core.mail import EmailMessage
-from django.template.loader import render_to_string
-
 from orders.models import Order
 
+logger = logging.getLogger(__name__)
 
 @shared_task
 def payment_completed(order_id: int) -> None:
-    """Send invoice email (PDF attached if WeasyPrint is available)."""
-    order = Order.objects.get(id=order_id)
+    """
+    Fires after a Stripe checkout session completes.
+    Keep it simple for now: fetch the order, log, and email the customer.
+    """
+    try:
+        order = Order.objects.get(id=order_id)
+    except Order.DoesNotExist:
+        logger.warning("payment_completed: order %s not found", order_id)
+        return
 
-    subject = f"Football Shirt Emporium - Invoice #{order.id}"
-    body = "Please find your invoice attached. Thank you for your order."
-
-    email = EmailMessage(
-        subject=subject,
-        body=body,
-        from_email=getattr(settings, "DEFAULT_FROM_EMAIL", "admin@example.com"),
-        to=[order.email] if getattr(order, "email", None) else [],
+    subject = f"Order #{order.id} paid"
+    message = (
+        f"Thanks for your purchase, {order.first_name}!\n\n"
+        f"We've received your payment for order #{order.id}."
     )
 
-    # Try to render a PDF; if WeasyPrint or its native deps are missing, just send the email without attachment.
+    # Fallback addresses so this never crashes in Heroku if env isn’t set
+    from_email = getattr(settings, "DEFAULT_FROM_EMAIL", "noreply@example.com")
+    to_list = [order.email] if order.email else []
+
     try:
-        import weasyprint  # lazy import so migrations/URL checks don't fail on Windows
-        html = render_to_string("orders/order/pdf.html", {"order": order})
+        if to_list:
+            send_mail(subject, message, from_email, to_list, fail_silently=True)
+    except Exception as e:
+        logger.warning("payment_completed: email send failed for order %s: %s", order.id, e)
 
-        css_path = finders.find("css/pdf.css")
-        stylesheets = [weasyprint.CSS(css_path)] if css_path else []
-
-        pdf_io = BytesIO()
-        weasyprint.HTML(string=html).write_pdf(pdf_io, stylesheets=stylesheets)
-        email.attach(
-            filename=f"order_{order.id}.pdf",
-            content=pdf_io.getvalue(),
-            mimetype="application/pdf",
-        )
-    except Exception:
-        # Optional: log this if you want visibility instead of silent pass.
-        # import logging; logging.getLogger(__name__).warning("PDF generation skipped", exc_info=True)
-        pass
-
-    email.send(fail_silently=True)
+    logger.info("payment_completed handled for order %s", order.id)
