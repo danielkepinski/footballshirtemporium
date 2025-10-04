@@ -35,7 +35,7 @@ def profile_edit(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Your profile was updated.")
-            return redirect("account:dashboard")
+            return redirect("accounts:dashboard")
     else:
         form = UserUpdateForm(instance=request.user)
     return render(request, "accounts/profile.html", {"form": form})
