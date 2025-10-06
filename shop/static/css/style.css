@@ -204,37 +204,38 @@ margin-top: 56px; padding: 20px 0; border-top:1px solid var(--border); color: va
 
 /* Tablets */
 @media (max-width: 800px){
-  /* product list layout (sidebar + main) */
+  /* general layout tweaks */
   .container.product-layout{ grid-template-columns: 1fr; gap: 16px; }
   .menu{ gap: 12px; }
-  .hero{ padding: 32px 0;
-         object-fit: cover; }
-}
- /* Off-canvas style menu */
-  .nav {
+  .hero{ padding: 32px 0; object-fit: cover; }
+
+  /* show the hamburger on mobile, hide inline links initially */
+  .nav-toggle { display: inline-block; }
+  
+  /* Off-canvas style menu  */
+  .menu {
     position: fixed;
-    inset: 0 0 auto 0; /* top:0, left:0, right:0 */
-    top: 56px;          /* header height approx */
+    inset: 56px 0 auto 0;   /* below ~56px header */
     background: #ffffff;
     transform: translateY(-110%);
     transition: transform 180ms ease-out;
     border-bottom: 1px solid #eee;
     z-index: 50;
-  }
 
-  .nav.open {
-    transform: translateY(0);
-  }
-
-  .nav ul {
+    /* stack links vertically on mobile */
     display: grid;
     gap: 0.5rem;
     padding: 0.75rem 1rem 1rem;
   }
 
-  .nav li {
-    border-bottom: 1px solid #f2f2f2;
-    padding: 0.25rem 0.1rem 0.5rem;
+  /* when JS toggles .open, slide down */
+  .menu.open { transform: translateY(0); }
+
+  /* link rows <li>) */
+  .menu a {
+    display: block;
+    padding: 10px 6px;
+    border-radius: 8px;
   }
 }
 
@@ -244,56 +245,6 @@ margin-top: 56px; padding: 20px 0; border-top:1px solid var(--border); color: va
   .brand__text{ font-size: 16px; }
   .btn{ padding: 10px 14px; }
   table.cart{ display:block; overflow-x:auto; white-space:nowrap; }
-  .site-header .nav{ gap: 10px; }
-}
-
-/* Very small phones */
-@media (max-width: 360px){
-  .brand__logo{ height: 32px; }
-  .brand__text{ font-size: 14px; }
-  .menu a{ font-size: 14px; }
-  .hero__inner h1{ font-size: clamp(20px, 7vw, 28px); }
-  .hero__inner p{ font-size: clamp(13px, 4.2vw, 16px); }
-  .card__title{ font-size: 14px; }
-}
-
-/* Ultra-narrow devices: ≤300px */
-@media (max-width: 300px){
-  /* collapse everything to fit comfortably */
-  .site-header .nav{ flex-wrap: wrap; gap: 8px; }
-  .brand { font-size: 0.95rem; }
-  .brand__logo{ height: 26px; }
-  .brand__text{ display:none; }  /* keep just the logo to save space */
-  .icon-hamburger, .icon-close { width: 24px; height: 24px; }
-   .nav ul { gap: 0.25rem; }
-  .menu a{ font-size: 12px; padding: 4px 6px; }
-
-  .hero{ padding: 20px 0; 
-         object-fit: cover; }
-  .hero__inner{ padding: 8px; }
-  .hero__inner h1{ font-size: 18px; line-height: 1.15; }
-  .hero__inner p{ font-size: 12px; }
-  .btn{ font-size: 12px; padding: 8px 10px; }
-
-  .grid{ grid-template-columns: 1fr; gap: 10px; }
-  .card__img{ border-radius: 8px; }
-  .card__title{ font-size: 13px; }
-  .card__meta{ font-size: 12px; }
-
-  /* Accessible hide class */
-.sr-only {
-  position: absolute !important;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
-  overflow: hidden; clip: rect(0,0,0,0);
-  white-space: nowrap; border: 0;
-}
-
-  /* tables scroll instead of breaking layout */
-  table.cart{ display:block; width:100%; overflow-x:auto; white-space:nowrap; }
-  table.cart th, table.cart td{ padding: 8px 6px; font-size: 12px; }
-
-  /* forms tighter */
-  form input, form select, form textarea{ font-size: 14px; padding: 8px; }
-  label{ font-size: 12px; }
+  /* keep spacing with header controls */
+  .site-header .menu{ gap: 10px; }
 }
