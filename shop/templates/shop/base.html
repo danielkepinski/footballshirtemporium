@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>{% block title %}My shop{% endblock %}</title>
+    <title>{% block title %}Football Shirt Emporium{% endblock %}</title>
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Football Shirt Emporium - Your favourite classic football shirts
@@ -24,6 +24,19 @@
         <a href="{% url 'home' %}" class="brand">
         <img src="{% static 'img/FSElogo.jpg' %}" alt="Football Shirt Emporium logo" class="brand__logo">
         <span class="brand__text">Football Shirt Emporium</span>
+    
+    <!-- Hamburger -->
+    <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false">
+      <span class="sr-only">Menu</span>
+      <!-- Hamburger icon -->
+      <svg class="icon-hamburger" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <!-- Close icon -->
+      <svg class="icon-close" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 6l12 12M18 6l-12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
 
 </a>
         <!--  NAV -->
@@ -79,4 +92,9 @@
       <div class="container">© {{ now|date:"Y" }} Football Shirt Emporium by Daniel Kepinski</div>
     </footer>
   </body>
+</html>
+
+<!--  scripts  -->
+ <script src="{% static 'js/nav.js' %}"></script>
+</body>
 </html>
