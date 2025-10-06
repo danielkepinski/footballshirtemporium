@@ -132,14 +132,21 @@ STRIPE_API_VERSION = "2024-04-10"
 STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET", default="").strip()
 
 # --- Celery ---
+REDIS_URL = config("REDIS_TLS_URL", default=None) or config("REDIS_URL", default=None)
+
 CELERY_BROKER_URL = (
     REDIS_URL
     or config("CELERY_BROKER_URL", default="amqp://guest:guest@localhost:5672//")
 )
+
 CELERY_RESULT_BACKEND = (
     REDIS_URL
     or config("CELERY_RESULT_BACKEND", default="rpc://")
 )
+
+# Make Celery keep trying while dyno boots
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
 # Run tasks eagerly by default in DEBUG; override via env if needed
 CELERY_TASK_ALWAYS_EAGER = config("CELERY_TASK_ALWAYS_EAGER", cast=bool, default=DEBUG)
 CELERY_TASK_EAGER_PROPAGATES = config("CELERY_TASK_EAGER_PROPAGATES", cast=bool, default=DEBUG)
