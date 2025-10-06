@@ -137,26 +137,23 @@ STRIPE_API_VERSION = "2024-04-10"
 STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET", default="").strip()
 
 # --- Celery ---
-def _with_ssl_param(url: str) -> str:
-    if not url or not url.startswith("rediss://"):
-        return url
-    p = urlparse(url)
-    q = dict(parse_qsl(p.query))
-    q.setdefault("ssl_cert_reqs", "none")
-    return urlunparse(p._replace(query=urlencode(q)))
+REDIS_URL = config("REDIS_TLS_URL", default=config("REDIS_URL", default="")).strip()
 
-REDIS_BASE = config("REDIS_TLS_URL", default=config("REDIS_URL", default=""))
+CELERY_BROKER_URL = config("CELERY_BROKER_URL", default=REDIS_URL).strip()
+CELERY_RESULT_BACKEND = config("CELERY_RESULT_BACKEND", default=CELERY_BROKER_URL).strip()
 
-CELERY_BROKER_URL = _with_ssl_param(config("CELERY_BROKER_URL", default=REDIS_BASE))
-CELERY_RESULT_BACKEND = _with_ssl_param(config("CELERY_RESULT_BACKEND", default=CELERY_BROKER_URL))
-
-if CELERY_BROKER_URL and CELERY_BROKER_URL.startswith("rediss://"):
+# If using TLS (rediss://), configure SSL for Celery
+if CELERY_BROKER_URL.startswith("rediss://"):
     CELERY_BROKER_USE_SSL = {"ssl_cert_reqs": ssl.CERT_NONE}
+if CELERY_RESULT_BACKEND.startswith("rediss://"):
     CELERY_REDIS_BACKEND_USE_SSL = {"ssl_cert_reqs": ssl.CERT_NONE}
 
+# Keep the app responsive even if worker/backends wobble
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
-CELERY_TASK_ALWAYS_EAGER = config("CELERY_TASK_ALWAYS_EAGER", cast=bool, default=DEBUG)
-CELERY_TASK_EAGER_PROPAGATES = config("CELERY_TASK_EAGER_PROPAGATES", cast=bool, default=DEBUG)
+
+# Optional: run tasks inline while stabilizing workers (turn off later)
+CELERY_TASK_ALWAYS_EAGER = config("CELERY_TASK_ALWAYS_EAGER", cast=bool, default=False)
+CELERY_TASK_EAGER_PROPAGATES = config("CELERY_TASK_EAGER_PROPAGATES", cast=bool, default=False)
 
 # --- Email (dev default) ---
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
