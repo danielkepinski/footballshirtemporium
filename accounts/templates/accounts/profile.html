@@ -6,8 +6,8 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button class="btn" type="submit">Save changes</button>
-    <a class="btn btn--ghost" href="{% url 'account:dashboard' %}">Cancel</a>
+    <a class="btn btn--ghost" href="{% url 'accounts:dashboard' %}">Cancel</a>
   </form>
   <hr class="mt-4">
-  <p><a class="btn btn--ghost" href="{% url 'account:delete_account' %}">Delete my account</a></p>
+  <p><a class="btn btn--ghost" href="{% url 'accounts:delete_account' %}">Delete my account</a></p>
 {% endblock %}
