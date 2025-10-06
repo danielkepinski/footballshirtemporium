@@ -35,13 +35,6 @@ class OrderCreateForm(forms.ModelForm):
         model = Order
         fields = ["first_name", "last_name", "email", "address", "postal_code", "city"]
 
-    # optional: normalise values
-    def clean_postal_code(self):
-        pc = self.cleaned_data["postal_code"].upper().replace(" ", "")
-        # re-space UK postcode (simple approach)
-        if len(pc) > 3:
-            pc = pc[:-3] + " " + pc[-3:]
-        return pc
 
     def clean_first_name(self):
         return self.cleaned_data["first_name"].strip().title()
