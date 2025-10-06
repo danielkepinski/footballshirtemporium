@@ -1,8 +1,10 @@
 # myshop/settings.py
 from pathlib import Path
 import os
+from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode
 from decouple import config
 import dj_database_url
+import ssl
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -11,7 +13,10 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-only-insecure-key-change-me")
 DEBUG = config("DEBUG", cast=bool, default=True)
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1,localhost").split(",")
-
+HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME", "").strip()
+if HEROKU_APP_NAME:
+    ALLOWED_HOSTS.append(f"{HEROKU_APP_NAME}.herokuapp.com")
+    
 #HEROKU
 # If HEROKU_APP_NAME is set, add the Heroku app domain to ALLOWED
 HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME", "").strip()
@@ -132,22 +137,24 @@ STRIPE_API_VERSION = "2024-04-10"
 STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET", default="").strip()
 
 # --- Celery ---
-REDIS_URL = config("REDIS_TLS_URL", default=None) or config("REDIS_URL", default=None)
+def _with_ssl_param(url: str) -> str:
+    if not url or not url.startswith("rediss://"):
+        return url
+    p = urlparse(url)
+    q = dict(parse_qsl(p.query))
+    q.setdefault("ssl_cert_reqs", "none")
+    return urlunparse(p._replace(query=urlencode(q)))
 
-CELERY_BROKER_URL = (
-    REDIS_URL
-    or config("CELERY_BROKER_URL", default="amqp://guest:guest@localhost:5672//")
-)
+REDIS_BASE = config("REDIS_TLS_URL", default=config("REDIS_URL", default=""))
 
-CELERY_RESULT_BACKEND = (
-    REDIS_URL
-    or config("CELERY_RESULT_BACKEND", default="rpc://")
-)
+CELERY_BROKER_URL = _with_ssl_param(config("CELERY_BROKER_URL", default=REDIS_BASE))
+CELERY_RESULT_BACKEND = _with_ssl_param(config("CELERY_RESULT_BACKEND", default=CELERY_BROKER_URL))
 
-# Make Celery keep trying while dyno boots
+if CELERY_BROKER_URL and CELERY_BROKER_URL.startswith("rediss://"):
+    CELERY_BROKER_USE_SSL = {"ssl_cert_reqs": ssl.CERT_NONE}
+    CELERY_REDIS_BACKEND_USE_SSL = {"ssl_cert_reqs": ssl.CERT_NONE}
+
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
-
-# Run tasks eagerly by default in DEBUG; override via env if needed
 CELERY_TASK_ALWAYS_EAGER = config("CELERY_TASK_ALWAYS_EAGER", cast=bool, default=DEBUG)
 CELERY_TASK_EAGER_PROPAGATES = config("CELERY_TASK_EAGER_PROPAGATES", cast=bool, default=DEBUG)
 
