@@ -194,6 +194,38 @@ margin-top: 56px; padding: 20px 0; border-top:1px solid var(--border); color: va
 .center{ text-align:center; }
 .hidden{ display:none !important; }
 
+/* checkout / continue shopping buttons */
+.btn {
+  display: inline-block;
+  padding: 0.7rem 1.1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform .05s ease, opacity .2s ease, box-shadow .2s ease;
+  border: 1px solid transparent;
+}
+
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+
+.btn-primary {
+  background: #111827;           /* near-black to match header text */
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(17,24,39,.12);
+}
+.btn-primary:hover { opacity: .92; }
+
+.btn-light {
+  background: #f3f4f6;           /* light gray */
+  color: #111827;
+  border-color: #e5e7eb;
+}
+.btn-light:hover { background: #e5e7eb; }
+
+/* Align the buttons on the right nicely on the cart page */
+.ctas { display: flex; gap: .6rem; justify-content: flex-end; }
+
+
 
 /* ====== Responsive layout ====== */
 
