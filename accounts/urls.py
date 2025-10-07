@@ -7,5 +7,4 @@ urlpatterns = [
     path("orders/<int:pk>/", views.order_detail, name="order_detail"),
     path("profile/", views.profile_edit, name="profile"),            
     path("delete/", views.delete_account, name="delete_account"),    
-    path("accounts/logout/", auth_views.LogoutView.as_view(), name="logout"),
 ]
