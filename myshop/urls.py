@@ -1,8 +1,10 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth.views import LogoutView
 from django.conf import settings
 from django.conf.urls.static import static
 from shop import views as shop_views
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -16,6 +18,7 @@ urlpatterns = [
     path("payment/", include(("payment.urls", "payment"), namespace="payment")),
     path("accounts/", include(("accounts.urls", "accounts"), namespace="accounts")),
     path("accounts/", include("django.contrib.auth.urls")),
+    path("accounts/logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("addresses/", include("addresses.urls", namespace="addresses")),
 
 ]
