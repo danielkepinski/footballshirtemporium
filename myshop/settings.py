@@ -135,6 +135,7 @@ STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY", default="").strip()
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="").strip()
 STRIPE_API_VERSION = "2024-04-10"
 STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET", default="").strip()
+STRIPE_CURRENCY = "gbp" 
 
 # --- Celery ---
 REDIS_URL = config("REDIS_TLS_URL", default=config("REDIS_URL", default="")).strip()

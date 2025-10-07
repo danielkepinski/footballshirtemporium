@@ -25,7 +25,7 @@ def payment_process(request):
     if request.method == "POST":
         success_url = request.build_absolute_uri(reverse("payment:completed"))
         cancel_url = request.build_absolute_uri(reverse("payment:canceled"))
-        CURRENCY = "gbp"
+        CURRENCY = getattr(settings, "STRIPE_CURRENCY", "gbp")
 
         # Build line items
         line_items = []
