@@ -3,8 +3,9 @@ from django.urls import path, include
 from django.contrib.auth.views import LogoutView
 from django.conf import settings
 from django.conf.urls.static import static
-from shop import views as shop_views
 
+from shop import views as shop_views
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
