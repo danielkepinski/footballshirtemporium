@@ -250,6 +250,21 @@ margin-top: 56px; padding: 20px 0; border-top:1px solid var(--border); color: va
 /* Align the buttons on the right nicely on the cart page */
 .ctas { display: flex; gap: .6rem; justify-content: flex-end; }
 
+/* Visually hidden utility (keeps it for screen-readers) */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Never let the hidden logout form affect layout anywhere */
+#primary-nav #logout-form { display:none !important; margin:0; padding:0; }
 
 
 /* ====== Responsive layout ====== */
@@ -262,24 +277,22 @@ margin-top: 56px; padding: 20px 0; border-top:1px solid var(--border); color: va
 /* Tablets */
 @media (max-width: 800px){
   /* general layout tweaks */
-  .container.product-layout{ grid-template-columns: 1fr; gap: 16px; }
-  .menu{ gap: 12px; }
-  .hero{ padding: 32px 0; object-fit: cover; }
+  .container.product-layout { grid-template-columns: 1fr; gap: 16px; }
+  .menu { gap: 12px; }
+  .hero { padding: 32px 0; object-fit: cover; }
 
   /* show the hamburger on mobile, hide inline links initially */
   .nav-toggle { display: inline-block; }
-  
+
   /* Off-canvas style menu  */
   .menu {
     position: fixed;
-    inset: 56px 0 auto 0;   /* below ~56px header */
+    inset: 56px 0 auto 0;        /* below ~56px header */
     background: #ffffff;
     transform: translateY(-110%);
     transition: transform 180ms ease-out;
     border-bottom: 1px solid #eee;
     z-index: 50;
-    /* Never let the hidden logout form affect layout */
-    .menu #logout-form { display: none !important; margin: 0; padding: 0; }
 
     /* stack links vertically on mobile */
     display: grid;
@@ -290,31 +303,26 @@ margin-top: 56px; padding: 20px 0; border-top:1px solid var(--border); color: va
   /* when JS toggles .open, slide down */
   .menu.open { transform: translateY(0); }
 
-  /* link rows <li>) */
-  /* Make sure all menu items look the same, including the logout link */
-.menu a,
-.menu .logout-link {
-  display: inline-block
-  padding: 10px 6px;
-  border-radius: 8px;;
-}
+  /* hide links entirely when menu is closed */
+  .menu:not(.open) a { display: none; }
 
-  .menu .as-link { 
-    display:block; 
-    padding:10px 6px; 
-    border-radius:8px; 
-    width:100%; 
-    text-align:left; 
+  /* Make links full-width tap targets (includes the logout pseudo-link) */
+  .menu a,
+  .menu .as-link {
+    display: block;
+    padding: 10px 6px;
+    border-radius: 8px;
+    width: 100%;
+    text-align: left;
   }
+}
 
 /* Phones */
 @media (max-width: 520px){
-  .grid{ grid-template-columns: 1fr; }
-  .brand__text{ font-size: 16px; }
-  .btn{ padding: 10px 14px; }
-  table.cart{ display:block; overflow-x:auto; white-space:nowrap; }
+  .grid { grid-template-columns: 1fr; }
+  .brand__text { font-size: 16px; }
+  .btn { padding: 10px 14px; }
+  table.cart { display:block; overflow-x:auto; white-space:nowrap; }
   /* keep spacing with header controls */
-  .site-header .menu{ gap: 10px; }
+  .site-header .menu { gap: 10px; }
 }
-
-
