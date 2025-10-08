@@ -44,12 +44,12 @@ class OrderItemInline(admin.TabularInline):
     raw_id_fields = ['product']
 
 
-def order_payment(obj):
-    url = obj.get_stripe_url()
-    if obj.stripe_id:
-        html = f'<a href="{url}" target="_blank">{obj.stripe_id}</a>'
-        return mark_safe(html)
-    return ''
+def order_payment(self, obj):
+        url = obj.get_stripe_url()
+        if not url:
+            return "-"
+        return format_html('<a href="{}" target="_blank" rel="noopener">Stripe</a>', url)
+    order_payment.short_description = "Stripe"
 
 
 order_payment.short_description = 'Stripe payment'
@@ -86,5 +86,6 @@ class OrderAdmin(admin.ModelAdmin):
         order_pdf,
     ]
     list_filter = ['paid', 'created', 'updated']
+    search_fields = ["first_name", "last_name", "email", "id"]
     inlines = [OrderItemInline]
     actions = [export_to_csv]
