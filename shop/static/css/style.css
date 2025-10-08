@@ -77,6 +77,30 @@ a{ color: inherit; text-decoration: none; }
 }
 .menu a:hover{ background:#f8f8f8; }
 
+/* logout button */
+.menu .logout-form {
+  display: inline;
+  margin: 0;
+}
+
+/* make the button look like a text link */
+.menu .as-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0 0 0 16px;    
+  font: inherit;             
+  color: inherit;            
+  text-transform: uppercase; 
+  letter-spacing: .04em;
+  cursor: pointer;
+}
+.menu .as-link:hover,
+.menu .as-link:focus {
+  text-decoration: underline;
+  outline: none;
+}
+
 /* Toggle button */
 .nav-toggle {
   display: none; /* hidden on desktop */
