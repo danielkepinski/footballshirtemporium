@@ -40,15 +40,11 @@ a{ color: inherit; text-decoration: none; }
 
 /* Header & nav */
 .site-header {
-  position: sticky;
-  top: 0;
-  z-index: 60;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   padding: 0.75rem 1rem;
-  background: var(--bg);
   border-bottom: 1px solid #eaeaea;
 }
 .nav{
@@ -73,11 +69,7 @@ a{ color: inherit; text-decoration: none; }
   line-height:1;
   color:inherit;
 }
-
-.menu{
-  display:flex;
-  gap:20px;
-}
+.menu{ display:flex; gap:20px; }
 .menu a{
   text-transform:uppercase; letter-spacing:.06em; font-weight:700;
   padding:8px 6px; border-radius:8px;
@@ -88,28 +80,28 @@ a{ color: inherit; text-decoration: none; }
 .menu .logout-form { display: inline; margin: 0; }
 
 /* make the button look like a text link */
-.menu .as-link{
-  background:none; border:0; padding:0; margin:0;
-  font:inherit; color:inherit;
-  text-transform:uppercase; letter-spacing:.04em;
-  cursor:pointer;
+.menu .as-link {
+  background: none; border: 0; padding: 0; margin: 0;
+  font: inherit; color: inherit;
+  text-transform: uppercase; letter-spacing: .04em;
+  cursor: pointer;
 }
 .menu .as-link:hover,
-.menu .as-link:focus{ text-decoration:underline; outline:none; }
+.menu .as-link:focus { text-decoration: underline; outline: none; }
 
 /* Toggle button */
-.nav-toggle{
-  display:none;
-  background:none;
-  border:0;
-  padding:0.25rem;
-  cursor:pointer;
-  line-height:0;
+.nav-toggle {
+  display: none; /* hidden on desktop */
+  background: none;
+  border: 0;
+  padding: 0.25rem;
+  cursor: pointer;
+  line-height: 0;
 }
-.nav-toggle .icon-close{ display:none; }
-.nav-toggle[aria-expanded="true"] .icon-hamburger{ display:none; }
-.nav-toggle[aria-expanded="true"] .icon-close{ display:inline; }
-.icon-hamburger,.icon-close{ width:28px; height:28px; }
+.nav-toggle .icon-close { display: none; }
+.nav-toggle[aria-expanded="true"] .icon-hamburger { display: none; }
+.nav-toggle[aria-expanded="true"] .icon-close { display: inline; }
+.icon-hamburger, .icon-close { width: 28px; height: 28px; }
 
 /* buttons */
 .btn{
@@ -127,21 +119,22 @@ a{ color: inherit; text-decoration: none; }
 /* Hero */
 .hero{
   display:grid;
-  gap:20px;
+  gap: 20px;
   align-items:center;
   padding: clamp(24px, 5vw, 56px) 0;
   text-align:center;
+  object-fit: cover;
 }
 .hero__media img{
   width:100%;
   height:auto;
-  border-radius:12px;
+  border-radius: 12px;
   box-shadow: var(--shadow);
 }
 .hero h1{
   font-size: clamp(28px, 6vw, 56px);
-  line-height:1.1; margin:0 0 8px;
-  font-weight:900; letter-spacing:.02em;
+  line-height:1.1; margin: 0 0 8px;
+  font-weight: 900; letter-spacing:.02em;
 }
 .hero p{ color: var(--muted); margin:0 0 22px; }
 
@@ -149,23 +142,23 @@ a{ color: inherit; text-decoration: none; }
 .grid{
   display:grid;
   grid-template-columns: repeat(4, 1fr);
-  gap:22px;
+  gap: 22px;
 }
-@media (max-width:1100px){ .grid{ grid-template-columns: repeat(3, 1fr); } }
-@media (max-width:800px){ .grid{ grid-template-columns: repeat(2, 1fr); } }
-@media (max-width:520px){ .grid{ grid-template-columns: 1fr; } }
+@media (max-width: 1100px){ .grid{ grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 800px){ .grid{ grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px){ .grid{ grid-template-columns: 1fr; } }
 
 .card{
   border:1px solid var(--border);
   border-radius: var(--radius);
   overflow:hidden;
-  background:#fff;
+  background: #fff;
   transition: transform .08s ease, box-shadow .2s ease;
 }
 .card:hover{ transform: translateY(-2px); box-shadow: var(--shadow); }
 .card__img{ aspect-ratio: 4 / 3; object-fit: cover; width:100%; }
 .card__body{ padding:14px; }
-.card__title{ font-weight:800; margin:0 0 6px; }
+.card__title{ font-weight: 800; margin:0 0 6px; }
 .card__meta{ display:flex; align-items:center; justify-content:space-between; color:var(--muted); }
 .badge{ background: var(--accent-2); color:#fff; padding:2px 8px; border-radius:999px; font-size:12px; font-weight:800; letter-spacing:.04em; }
 
@@ -178,42 +171,28 @@ a{ color: inherit; text-decoration: none; }
 
 /* Tables (cart/order) */
 table.cart{
-  width:100%; border-collapse:collapse; margin:14px 0 8px;
+  width:100%; border-collapse: collapse; margin: 14px 0 8px;
 }
 table.cart th, table.cart td{
   padding:12px 10px; border-bottom:1px solid var(--border); vertical-align: middle;
 }
-table.cart th{
-  text-align:left; text-transform:uppercase; letter-spacing:.05em; font-size:12px; color:var(--muted);
-}
+table.cart th{ text-align:left; text-transform:uppercase; letter-spacing:.05em; font-size:12px; color:var(--muted);}
 table.cart .num{ text-align:right; }
 table.cart tr.total td{ font-weight:900; }
-
-/* Cart controls: keep quantity + update + remove tidy on small screens */
-table.cart td form{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  flex-wrap:wrap;             /* allow wrap when narrow */
-}
-table.cart td form select{ min-width:64px; }
-table.cart .btn,
-table.cart .button,
-table.cart a.button{ white-space:nowrap; }  /* prevent mid-word wraps */
 
 /* Forms */
 input[type="text"], input[type="email"], input[type="number"], select, textarea{
   width:100%; padding:12px 12px; border:1px solid var(--border); border-radius:10px;
   outline:none; background:#fff;
 }
-input:focus, select:focus, textarea:focus{ border-color:#d1d5db; box-shadow:0 0 0 4px rgba(17,17,17,0.06); }
+input:focus, select:focus, textarea:focus{ border-color:#d1d5db; box-shadow: 0 0 0 4px rgba(17,17,17,0.06); }
 .form-row{ display:grid; gap:14px; grid-template-columns: repeat(2, 1fr); }
 @media (max-width:700px){ .form-row{ grid-template-columns: 1fr; } }
 
 /* Footer */
 .site-footer{
-  margin-top:56px; padding:20px 0; border-top:1px solid var(--border); color:var(--muted);
-  font-size:14px;
+  margin-top: 56px; padding: 20px 0; border-top:1px solid var(--border); color: var(--muted);
+  font-size: 14px;
 }
 
 /* Utility */
@@ -222,114 +201,149 @@ input:focus, select:focus, textarea:focus{ border-color:#d1d5db; box-shadow:0 0 
 .hidden{ display:none !important; }
 
 /* checkout / continue shopping buttons */
-.btn{
-  display:inline-block;
-  padding:0.7rem 1.1rem;
-  border-radius:8px;
-  text-decoration:none;
-  font-weight:600;
+.btn {
+  display: inline-block;
+  padding: 0.7rem 1.1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
   transition: transform .05s ease, opacity .2s ease, box-shadow .2s ease;
-  border:1px solid transparent;
+  border: 1px solid transparent;
 }
-.btn:hover{ transform: translateY(-1px); }
-.btn:active{ transform: translateY(0); }
-
-.btn-primary{
-  background:#111827; color:#fff;
-  box-shadow:0 6px 14px rgba(17,24,39,.12);
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn-primary {
+  background: #111827;           /* near-black to match header text */
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(17,24,39,.12);
 }
-.btn-primary:hover{ opacity:.92; }
-
-.btn-light{
-  background:#f3f4f6; color:#111827; border-color:#e5e7eb;
+.btn-primary:hover { opacity: .92; }
+.btn-light {
+  background: #f3f4f6;           /* light gray */
+  color: #111827;
+  border-color: #e5e7eb;
 }
-.btn-light:hover{ background:#e5e7eb; }
+.btn-light:hover { background: #e5e7eb; }
 
-.ctas{ display:flex; gap:.6rem; justify-content:flex-end; }
+/* Align the buttons on the right nicely on the cart page */
+.ctas { display: flex; gap: .6rem; justify-content: flex-end; }
 
-/* Visually hidden utility */
-.sr-only{
-  position:absolute !important; width:1px !important; height:1px !important;
-  padding:0 !important; margin:-1px !important; overflow:hidden !important;
-  clip:rect(0,0,0,0) !important; white-space:nowrap !important; border:0 !important;
+/* Visually hidden utility (keeps it for screen-readers) */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 
-/* never let the hidden logout form affect layout */
-#primary-nav #logout-form{ display:none !important; margin:0; padding:0; }
+/* Never let the hidden logout form affect layout anywhere */
+#primary-nav #logout-form { display:none !important; margin:0; padding:0; }
+
+/* Make action controls in cart behave better on narrow screens */
+.cart-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem;
+  justify-content:flex-end;
+  align-items:center;
+}
+table.cart td.controls{
+  white-space:nowrap;
+}
+table.cart td.controls form{
+  display:inline-block;
+}
 
 /* ====== Responsive layout ====== */
 
 /* Large tablets / small laptops */
-@media (max-width:1100px){
+@media (max-width: 1100px){
   .grid{ grid-template-columns: repeat(3, 1fr); }
 }
 
 /* Tablets */
-@media (max-width:800px){
-  .container.product-layout{ grid-template-columns:1fr; gap:16px; }
-  .menu{ gap:12px; }
-  .hero{ padding:32px 0; }
+@media (max-width: 800px){
+  /* general layout tweaks */
+  .container.product-layout { grid-template-columns: 1fr; gap: 16px; }
+  .menu { gap: 12px; }
+  .hero { padding: 32px 0; object-fit: cover; }
 
-  .nav-toggle{ display:inline-block; }
+  /* show the hamburger on mobile, hide inline links initially */
+  .nav-toggle { display: inline-block; }
 
-  /* Off-canvas style menu */
-  .menu{
-    position:fixed;
-    inset:56px 0 auto 0;
-    background:#ffffff;
-    transform:translateY(-110%);
-    transition:transform 180ms ease-out;
-    border-bottom:1px solid #eee;
-    z-index:50;
+  /* Off-canvas style menu  */
+  .menu {
+    position: fixed;
+    inset: 56px 0 auto 0;        /* below ~56px header */
+    background: #ffffff;
+    transform: translateY(-110%);
+    transition: transform 180ms ease-out;
+    z-index: 50;
 
-    display:grid;
-    gap:0.5rem;
-    padding:0.75rem 1rem 1rem;
+    /* stack links vertically on mobile */
+    display: grid;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem 1rem;
   }
-  .menu.open{ transform:translateY(0); }
 
-  /* hide links when closed */
-  .menu:not(.open) a,
-  .menu:not(.open) .as-link{ display:none; }
+  /* Hide any trace when closed (prevents the thin white line) */
+  .menu:not(.open){
+    visibility: hidden;
+    pointer-events: none;
+    border-bottom: 0;
+    transform: translateY(-110%);
+  }
 
-  /* full-width tap targets */
+  /* Only show border when the drawer is open */
+  .menu.open{
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
+    border-bottom: 1px solid #eee;
+  }
+
+  /* hide links entirely when menu is closed */
+  .menu:not(.open) a { display: none; }
+
+  /* Make links full-width tap targets (includes the logout pseudo-link) */
   .menu a,
-  .menu .as-link{
-    display:block;
-    padding:10px 6px;
-    border-radius:8px;
-    width:100%;
-    text-align:left;
+  .menu .as-link {
+    display: block;
+    padding: 10px 6px;
+    border-radius: 8px;
+    width: 100%;
+    text-align: left;
   }
 
-  /* Smaller cart controls on phones/tablets */
-  table.cart td form{
-    gap:6px;
-  }
-  table.cart td form .btn,
-  table.cart td .btn{
-    padding:6px 10px;
-    border-radius:6px;
-  }
+  /* Cart table tweaks on tablets */
+  table.cart td.controls { display:block; white-space:normal; }
+  .cart-actions { justify-content: flex-start; }
 }
 
 /* Phones */
-@media (max-width:520px){
-  .grid{ grid-template-columns:1fr; }
-  .brand__text{ font-size:16px; }
-  .btn{ padding:10px 14px; }
-  table.cart{ display:block; overflow-x:auto; white-space:nowrap; }
-  .site-header .menu{ gap:10px; }
+@media (max-width: 520px){
+  .grid { grid-template-columns: 1fr; }
+  .brand__text { font-size: 16px; }
+  .btn { padding: 10px 14px; }
+  table.cart { display:block; overflow-x:auto; white-space:nowrap; }
+  .site-header .menu { gap: 10px; }
+  .cart-actions { justify-content: stretch; }
 }
 
-/* Ultra-small phones */
-@media (max-width:300px){
-  .site-header{ padding:0.5rem; }
-  .brand__logo{ height:32px; }
-  .brand__text{ font-size:14px; }
-  .nav-toggle{ padding:0.2rem; }
-  .menu{ inset:52px 0 auto 0; }
-  .menu a, .menu .as-link{ padding:8px 6px; }
-  .hero h1{ font-size:24px; }
-  .btn{ padding:8px 12px; }
+/* Very small phones */
+@media (max-width: 300px){
+  body { font-size: 14px; }
+  .brand__text { display:none; }          /* icon only to save space */
+  .nav-toggle { padding: 0.15rem; }
+  .btn { padding: 8px 12px; border-radius: 10px; }
+  .hero { padding: 18px 0; }
+  .hero h1 { font-size: clamp(22px, 8vw, 28px); }
+  .hero p { font-size: 14px; }
+  .menu a, .menu .as-link { padding: 8px 6px; }
+  .container { width: min(1200px, 94%); }
 }
