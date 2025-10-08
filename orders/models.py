@@ -32,7 +32,29 @@ class Order(models.Model):
     def get_total_cost(self):
         return sum(item.get_cost() for item in self.items.all())
 
+    def get_stripe_url(self) -> str:
+        """
+        Return a direct link to this order in the Stripe Dashboard (test/live).
+        Supports payment_intent (pi_...) and checkout session (cs_...).
+        """
+        if not self.stripe_id:
+            return ""
 
+        base = "https://dashboard.stripe.com"
+        if settings.STRIPE_SECRET_KEY.startswith("sk_test_"):
+            base += "/test"
+
+        sid = self.stripe_id
+        if sid.startswith("pi_"):
+            path = f"/payments/{sid}"
+        elif sid.startswith("cs_"):
+            path = f"/checkouts/sessions/{sid}"
+        else:
+            # fallback to payments
+            path = f"/payments/{sid}"
+
+        return base + path
+    
 class OrderItem(models.Model):
     order = models.ForeignKey(
         Order,

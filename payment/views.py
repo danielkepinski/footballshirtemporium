@@ -54,6 +54,12 @@ def payment_process(request):
 
         try:
             session = stripe.checkout.Session.create(**session_data)
+
+            stripe_identifier = getattr(session, "payment_intent", None) or session.id
+            if stripe_identifier and stripe_identifier != order.stripe_id:
+                order.stripe_id = stripe_identifier
+                order.save(update_fields=["stripe_id"])
+                
         except Exception as e:
             # Show the error on the page
             return render(
