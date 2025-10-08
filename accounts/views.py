@@ -13,7 +13,7 @@ def signup(request):
             user = form.save()
             login(request, user)
             messages.success(request, "Welcome! Your account has been created.")
-            return redirect("account:dashboard")
+            return redirect("accounts:dashboard")
     else:
         form = UserCreationForm()
     return render(request, "accounts/signup.html", {"form": form})
