@@ -278,6 +278,8 @@ margin-top: 56px; padding: 20px 0; border-top:1px solid var(--border); color: va
     transition: transform 180ms ease-out;
     border-bottom: 1px solid #eee;
     z-index: 50;
+    /* Never let the hidden logout form affect layout */
+    .menu #logout-form { display: none !important; margin: 0; padding: 0; }
 
     /* stack links vertically on mobile */
     display: grid;
@@ -289,14 +291,14 @@ margin-top: 56px; padding: 20px 0; border-top:1px solid var(--border); color: va
   .menu.open { transform: translateY(0); }
 
   /* link rows <li>) */
-  .menu a {
-    display: block;
-    padding: 10px 6px;
-    border-radius: 8px;
-  }
+  /* Make sure all menu items look the same, including the logout link */
+.menu a,
+.menu .logout-link {
+  display: inline-block
+  padding: 10px 6px;
+  border-radius: 8px;;
 }
 
- .menu .logout-form { display: block; }
   .menu .as-link { 
     display:block; 
     padding:10px 6px; 
@@ -314,3 +316,5 @@ margin-top: 56px; padding: 20px 0; border-top:1px solid var(--border); color: va
   /* keep spacing with header controls */
   .site-header .menu{ gap: 10px; }
 }
+
+
