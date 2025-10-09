@@ -330,7 +330,28 @@ table.cart td.controls form{
   .grid { grid-template-columns: 1fr; }
   .brand__text { font-size: 16px; }
   .btn { padding: 10px 14px; }
-  table.cart { display:block; overflow-x:auto; white-space:nowrap; }
+  table.cart { 
+    display:block; 
+    overflow-x:auto; 
+    white-space:nowrap; 
+  }
+  table.cart td.controls{
+    white-space: normal;                 /* allow wrapping */
+  }
+  table.cart td.controls .cart-actions{
+    display: flex;
+    flex-direction: column;              /* stack vertically */
+    align-items: stretch;
+    gap: .5rem;
+  }
+  table.cart td.controls .cart-actions form{
+    display: block;
+    width: 100%;
+  }
+  table.cart td.controls .cart-actions form button,
+  table.cart td.controls .cart-actions form input[type="submit"]{
+    width: 100%;                          /* full-width tap targets */
+  }
   .site-header .menu { gap: 10px; }
   .cart-actions { justify-content: stretch; }
 }
