@@ -335,6 +335,29 @@ table.cart td.controls form{
     overflow-x:auto; 
     white-space:nowrap; 
   }
+   table.cart th,
+   table.cart td{
+    white-space: nowrap;   /* prevent wrapping inside cells */
+  }
+  /* Lay out any form inside a cart cell in one row */
+  table.cart td form{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap;     /* never wrap the select + update */
+  }
+  /* Keep the quantity select from getting too tiny */
+  table.cart td form select{
+    min-width: 64px;
+  }
+  /* Make the small action buttons compact */
+  table.cart td form input[type="submit"],
+  table.cart td .btn,
+  table.cart td button{
+    padding: 6px 10px;
+    font-size: 12px;
+    line-height: 1;
+  }
   table.cart td.controls{
     white-space: normal;                 /* allow wrapping */
   }
