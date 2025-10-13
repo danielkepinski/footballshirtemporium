@@ -9,11 +9,11 @@
     <aside>
       <h3>Categories</h3>
       <ul style="list-style:none; padding:0; margin:12px 0; display:grid; gap:8px;">
-        <li {% if not category %}class="selected"{% endif %}>
+        <li {% if not category %}class="selected{% endif %}">
           <a href="{% url 'shop:product_list' %}">All</a>
         </li>
         {% for c in categories %}
-          <li {% if category and category.slug == c.slug %}class="selected"{% endif %}>
+          <li {% if category and category.slug == c.slug %}class="selected"{% endif %}">
             <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
           </li>
         {% endfor %}
@@ -25,6 +25,42 @@
       <h1 style="margin-top:0;">
         {% if category %}{{ category.name }}{% else %}Products{% endif %}
       </h1>
+
+      {# Popular teams quick-filter #}
+      {% if popular_teams %}
+        <section aria-labelledby="popular-teams-title" style="margin: 8px 0 18px;">
+          <h2 id="popular-teams-title" style="font-size:1.05rem; margin:0 0 10px;">Popular teams</h2>
+          <div
+            class="teams-grid"
+            style="
+              display:grid;
+              grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+              gap: 10px;
+            "
+          >
+            {% for team in popular_teams %}
+              <a
+                href="{% url 'shop:product_list_by_team' team.slug %}"
+                class="team-chip"
+                style="
+                  border:1px solid var(--border);
+                  border-radius:10px;
+                  padding:10px 12px;
+                  text-align:center;
+                  display:flex;
+                  align-items:center;
+                  justify-content:center;
+                  font-weight:700;
+                  text-transform:uppercase;
+                  letter-spacing:.04em;
+                "
+              >
+                {{ team.name }}
+              </a>
+            {% endfor %}
+          </div>
+        </section>
+      {% endif %}
 
       <div class="grid">
         {% for product in products %}
