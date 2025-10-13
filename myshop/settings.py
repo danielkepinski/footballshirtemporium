@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     "payment.apps.PaymentConfig",
     "accounts",
     "addresses",
+    "cloudinary",
+    "cloudinary_storage",
 ]
 
 # --- Middleware ---
