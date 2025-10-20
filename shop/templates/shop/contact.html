@@ -1,0 +1,34 @@
+{% extends "base.html" %} {# or "shop/base.html" if that’s your base #}
+{% load static %}
+
+{% block title %}Contact us{% endblock %}
+
+{% block content %}
+  <h1>Contact us</h1>
+  <p>Have a question about a shirt or an order? Send us a message and we’ll get back to you.</p>
+
+  <form method="post" class="contact-form">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <p>
+      {{ form.name.label_tag }}
+      {{ form.name }}
+      {{ form.name.errors }}
+    </p>
+    <p>
+      {{ form.email.label_tag }}
+      {{ form.email }}
+      {{ form.email.errors }}
+    </p>
+    <p>
+      {{ form.message.label_tag }}
+      {{ form.message }}
+      {{ form.message.errors }}
+    </p>
+
+    {{ form.website }} {# honeypot - hidden #}
+
+    <button type="submit" class="btn">Send message</button>
+  </form>
+{% endblock %}
