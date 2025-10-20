@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.mail import send_mail
 from .forms import ContactForm
+from django.db.models import Q
 
 from cart.forms import CartAddProductForm
 from .models import Category, Product, Team
@@ -98,4 +99,21 @@ def product_detail(request, id, slug):
             "product": product,
             "cart_product_form": cart_product_form,
         },
+    )
+
+def search(request):
+    q = (request.GET.get("q") or "").strip()
+    products = Product.objects.filter(available=True)
+    if q:
+        products = products.filter(
+            Q(name__icontains=q) |
+            Q(description__icontains=q) |
+            Q(category__name__icontains=q)
+        )
+
+    return render(request, "shop/search.html", {
+        "q": q,
+        "products": products,
+        "results_count": products.count(),
+    },
     )
