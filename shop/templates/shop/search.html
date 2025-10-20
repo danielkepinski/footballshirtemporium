@@ -1,0 +1,32 @@
+{% extends "base.html" %} {# or "shop/base.html" #}
+{% block title %}Search{% endblock %}
+
+{% block content %}
+  <h1>Search</h1>
+
+  <form method="get" action="{% url 'shop:search' %}" class="search-form">
+    <input type="search" name="q" value="{{ q }}" placeholder="Search shirts…" aria-label="Search">
+    <button type="submit" class="btn">Search</button>
+  </form>
+
+  {% if q %}
+    <p><strong>{{ results_count }}</strong> result{{ results_count|pluralize }} for “{{ q }}”</p>
+  {% endif %}
+
+  {% if products %}
+    <div class="product-list">
+      {% for product in products %}
+        <div class="item">
+          <a href="{{ product.get_absolute_url }}">
+            <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
+                 alt="{{ product.name }}">
+          </a>
+          <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>
+          £{{ product.price }}
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    {% if q %}<p>No matches. Try a different term.</p>{% endif %}
+  {% endif %}
+{% endblock %}
