@@ -78,6 +78,20 @@
       </div>
     </header>
 
+    <!-- HERO SECTION -->
+    {% if show_hero %}
+      <section class="hero">
+        <div class="hero__media">
+          <img src="{% static 'img/hero.jpg' %}" alt="Selection of classic retro football shirts">
+        </div>
+        <div class="hero__inner">
+          <h1>Nostalgia. Your Way.</h1>
+          <p>Relive your favourite memories!</p>
+          <a class="btn" href="{% url 'shop:product_list' %}">Shop now</a>
+        </div>
+      </section>
+    {% endif %}
+
     <!-- MAIN (messages + page content) -->
     <main class="container" style="padding: 20px 0;">
       {% if messages %}
