@@ -1,110 +1,57 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>{% block title %}Football Shirt Emporium{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Football Shirt Emporium - Your favourite classic football shirts">
-    <meta name="keywords" content="football, shirt, retro, classic, vintage, soccer, kit">
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container nav">
+    <!-- Brand -->
+    <a href="{% url 'home' %}" class="brand">
+      <img src="{% static 'img/FSElogo.jpg' %}" alt="Football Shirt Emporium logo" class="brand__logo">
+      <span class="brand__text">Football Shirt Emporium</span>
+    </a>
 
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <!-- Mobile toggle -->
+    <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false">
+      <span class="sr-only">Menu</span>
+      <!-- Hamburger icon -->
+      <svg class="icon-hamburger" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <!-- Close icon -->
+      <svg class="icon-close" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 6l12 12M18 6l-12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
 
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicons/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicons/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicons/favicon-16x16.png' %}">
-  </head>
+    <!-- NAV -->
+    <nav id="primary-nav" class="menu">
+      <a href="{% url 'shop:product_list' %}">Shop</a>
+      <a href="{% url 'cart:cart_detail' %}">Cart</a>
 
-  <body>
-    <!-- HEADER -->
-    <header class="site-header">
-      <div class="container nav">
-        <!-- Brand -->
-        <a href="{% url 'home' %}" class="brand">
-          <img src="{% static 'img/FSElogo.jpg' %}" alt="Football Shirt Emporium logo" class="brand__logo">
-          <span class="brand__text">Football Shirt Emporium</span>
+      {% if request.user.is_authenticated %}
+        <a href="{% url 'accounts:account' %}">My account</a>
+        <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+          Log out
         </a>
+        <form id="logout-form" action="{% url 'logout' %}" method="post" hidden>
+          {% csrf_token %}
+        </form>
+      {% else %}
+        <a href="{% url 'login' %}?next={{ request.path }}">Log in</a>
+        <a href="{% url 'accounts:register' %}">Register</a>
+      {% endif %}
+    </nav>
 
-        <!-- Mobile toggle -->
-        <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false">
-          <span class="sr-only">Menu</span>
-          <!-- Hamburger icon -->
-          <svg class="icon-hamburger" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          <!-- Close icon -->
-          <svg class="icon-close" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M6 6l12 12M18 6l-12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
-
-        <!-- NAV -->
-        <nav id="primary-nav" class="menu">
-          <a href="{% url 'shop:product_list' %}">Shop</a>
-          <a href="{% url 'cart:cart_detail' %}">Cart</a>
-          {% if request.user.is_authenticated %}
-            <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            Log out
-            </a>
-            <form id="logout-form" action="{% url 'logout' %}" method="post" hidden>
-            {% csrf_token %}
-            </form>
-          {% else %}
-            <a href="{% url 'login' %}">Log in</a>
-          {% endif %}
-        </nav>
-
-        <!-- CART -->
-        <div class="cart" style="margin-left: 16px;">
-          {% with total_items=cart|length %}
-            {% if total_items > 0 %}
-              Your cart:
-              <a href="{% url 'cart:cart_detail' %}">
-                {{ total_items }} item{{ total_items|pluralize }},
-                £{{ cart.get_total_price }}
-              </a>
-            {% elif not order %}
-              Your cart is empty.
-            {% endif %}
-          {% endwith %}
-        </div>
-      </div>
-    </header>
-
-    <!-- HERO SECTION -->
-    {% if show_hero %}
-      <section class="hero">
-        <div class="hero__media">
-          <img src="{% static 'img/hero.jpg' %}" alt="Selection of classic retro football shirts">
-        </div>
-        <div class="hero__inner">
-          <h1>Nostalgia. Your Way.</h1>
-          <p>Relive your favourite memories!</p>
-          <a class="btn" href="{% url 'shop:product_list' %}">Shop now</a>
-        </div>
-      </section>
-    {% endif %}
-
-    <main class="container" style="padding: 20px 0;">
-      {% block content %}{% endblock %}
-    </main>
-
-    <footer class="site-footer">
-      <div class="container">© {{ now|date:"Y" }} Football Shirt Emporium by Daniel Kepinski</div>
-    </footer>
-
-    <!-- Small inline script to toggle the mobile menu -->
-    <script>
-      (function () {
-        const btn = document.querySelector('.nav-toggle');
-        const nav = document.getElementById('primary-nav');
-        if (!btn || !nav) return;
-        btn.addEventListener('click', function () {
-          const open = nav.classList.toggle('open');
-          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        });
-      })();
-    </script>
-  </body>
-</html>
+    <!-- CART -->
+    <div class="cart" style="margin-left: 16px;">
+      {% with total_items=cart|length %}
+        {% if total_items > 0 %}
+          Your cart:
+          <a href="{% url 'cart:cart_detail' %}">
+            {{ total_items }} item{{ total_items|pluralize }},
+            £{{ cart.get_total_price }}
+          </a>
+        {% elif not order %}
+          Your cart is empty.
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+</header>
