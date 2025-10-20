@@ -1,5 +1,9 @@
 # shop/views.py
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
+from django.conf import settings
+from django.contrib import messages
+from django.core.mail import send_mail
+from .forms import ContactForm
 
 from cart.forms import CartAddProductForm
 from .models import Category, Product, Team
@@ -7,6 +11,35 @@ from .models import Category, Product, Team
 
 def home(request):
     return render(request, "shop/home.html", {"show_hero": True})
+
+def contact(request):
+    if request.method == "POST":
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data["name"]
+            email = form.cleaned_data["email"]
+            message = form.cleaned_data["message"]
+
+            subject = f"Contact form message from {name}"
+            body = (
+                f"From: {name} <{email}>\n\n"
+                f"Message:\n{message}"
+            )
+
+            # who receives the email (set your address here)
+            to_email = getattr(settings, "DEFAULT_FROM_EMAIL", None) or getattr(settings, "EMAIL_HOST_USER", None)
+            if not to_email:
+                # fallback: show message but don't error
+                messages.warning(request, "Email settings not configured; message not sent. (Set DEFAULT_FROM_EMAIL or EMAIL_HOST_USER)")
+            else:
+                send_mail(
+                    subject=subject,
+                    message=body,
+                    from_email=to_email,   # use a verified sender (e.g., your SMTP user)
+                    recipient_list=[to_email],
+                    fail_silently=False,
+                )
+                messages.success(request, "Thanks! Your message has been sent.")
 
 
 def product_list(request, category_slug=None, team_slug=None):
