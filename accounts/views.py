@@ -49,3 +49,7 @@ def delete_account(request):
         messages.success(request, "Your account has been deleted.")
         return redirect("shop:product_list")
     return render(request, "accounts/confirm_delete.html")
+
+@login_required
+def account(request):
+    return render(request, "accounts/account.html")
