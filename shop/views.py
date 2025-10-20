@@ -41,6 +41,12 @@ def contact(request):
                 )
                 messages.success(request, "Thanks! Your message has been sent.")
 
+            return redirect("contact")  # stay on page with flash message
+    else:
+        form = ContactForm()
+
+    return render(request, "shop/contact.html", {"form": form})
+
 
 def product_list(request, category_slug=None, team_slug=None):
     """
