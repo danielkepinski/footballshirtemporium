@@ -26,6 +26,14 @@ img{ max-width:100%; display:block; }
 a{ color: inherit; text-decoration: none; }
 .container{ width: min(1200px, 92%); margin-inline: auto; }
 
+/* ===== Product list layout (sidebar + products) ===== */
+.product-layout{
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
 /* Announcement bar */
 .announce{
   background: var(--text);
@@ -264,6 +272,16 @@ table.cart td.controls form{
 /* Large tablets / small laptops */
 @media (max-width: 1100px){
   .grid{ grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Stack the product list layout before things get tight */
+@media (max-width: 900px){
+  .product-layout{
+    grid-template-columns: 1fr; /* one column */
+  }
+  .product-layout > aside{
+    margin-bottom: 16px;
+  }
 }
 
 /* Tablets */
