@@ -167,6 +167,7 @@ CELERY_TASK_EAGER_PROPAGATES = config("CELERY_TASK_EAGER_PROPAGATES", cast=bool,
 
 # --- Email ---
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "dev@example.com"
 
 # --- Auth redirects ---
 LOGIN_URL = "login"
@@ -196,3 +197,11 @@ LOGGING = {
 
 # --- Cloudinary (reads CLOUDINARY_URL from env) ---
 CLOUDINARY_URL = os.getenv("CLOUDINARY_URL", "")
+
+# --- Password validation ---
+AUTH_PASSWORD_VALIDATORS = [
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", "OPTIONS": {"min_length": 8}},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+]
