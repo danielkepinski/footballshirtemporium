@@ -8,12 +8,14 @@
     <meta name="description" content="Football Shirt Emporium - Your favourite classic football shirts" />
     <meta name="keywords" content="football, shirt, retro, classic, vintage, soccer, kit" />
 
-    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
-
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicons/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicons/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicons/favicon-16x16.png' %}">
+    <!-- css -->
+     <link rel="preload" href="{% static 'css/style.css' %}" as="style" onload="this.rel='stylesheet'">
+     <noscript><link rel="stylesheet" href="{% static 'css/style.css' %}"></noscript>
+
   </head>
 
   <body>
