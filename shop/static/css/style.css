@@ -160,6 +160,13 @@ a{ color: inherit; text-decoration: none; }
 }
 .hero p{ color: var(--muted); margin:0 0 22px; }
 
+.hero__inner img {
+  aspect-ratio: 3 / 2;
+  width: 100%;
+  height: auto;
+}
+
+
 /* Product grid */
 .grid{
   display:grid;
