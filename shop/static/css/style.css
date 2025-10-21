@@ -145,11 +145,16 @@ a{ color: inherit; text-decoration: none; }
   align-items:center;
   padding: clamp(24px, 5vw, 56px) 0;
   text-align:center;
-  object-fit: cover;
+}
+.hero__media{
+  /* keep the media block from collapsing while image loads */
+  display:block;
 }
 .hero__media img{
   width:100%;
   height: auto;
+  aspect-ratio: 1290 / 860;
+  object-fit: cover;
   border-radius: 12px;
   box-shadow: var(--shadow);
 }
@@ -160,11 +165,7 @@ a{ color: inherit; text-decoration: none; }
 }
 .hero p{ color: var(--muted); margin:0 0 22px; }
 
-.hero__inner img {
-  aspect-ratio: 3 / 2;
-  width: 100%;
-  height: auto;
-}
+
 
 
 /* Product grid */
