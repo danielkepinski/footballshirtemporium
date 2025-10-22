@@ -50,7 +50,7 @@
         <nav id="primary-nav" class="menu">
           <a href="{% url 'shop:product_list' %}">Shop</a>
           <a href="{% url 'cart:cart_detail' %}">Cart</a>
-          <a href="{% url 'shop/contact' %}">Contact</a>
+          <a href="{% url 'shop:contact' %}">Contact</a>
 
           <form action="{% url 'shop:search' %}" method="get" class="nav-search" role="search">
             <label for="nav-q" class="sr-only">Search</label>
