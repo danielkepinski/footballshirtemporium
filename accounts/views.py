@@ -23,11 +23,12 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # auto-login after sign up (optional)
-            return redirect("accounts:dashboard")  # or wherever you want
+            login(request, user)
+            messages.success(request, "Welcome! Your account has been created.")
+            return redirect("accounts:dashboard")
     else:
         form = UserCreationForm()
-    return render(request, "accounts\templates\registration\register.html", {"form": form})
+    return render(request, "registration/register.html", {"form": form})
 
 @login_required
 def dashboard(request):
