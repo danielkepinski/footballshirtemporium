@@ -58,7 +58,7 @@
           </form>
 
           {% if request.user.is_authenticated %}
-            <a href="{% url 'accounts:account' %}">My account</a>
+            <a href="{% url 'accounts:dashboard' %}">My account</a>
             <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Log out</a>
             <form id="logout-form" action="{% url 'logout' %}" method="post" hidden>{% csrf_token %}</form>
           {% else %}
@@ -66,6 +66,7 @@
             <a href="{% url 'accounts:register' %}">Register</a>
           {% endif %}
         </nav>
+
 
         <!-- CART -->
         <div class="cart" style="margin-left: 16px;">

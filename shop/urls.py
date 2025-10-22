@@ -11,4 +11,5 @@ urlpatterns = [
     path("team/<slug:team_slug>/", views.product_list, name="product_list_by_team"),
     path("contact/", views.contact, name="contact"), 
     path("search/", views.search, name="search"),
+    path("accounts/", include(("accounts.urls", "accounts"), namespace="accounts")),
 ]
