@@ -42,7 +42,7 @@ def contact(request):
                 )
                 messages.success(request, "Thanks! Your message has been sent.")
 
-            return redirect("contact")  # stay on page with flash message
+            return redirect("shop:contact")  # stay on page with flash message
     else:
         form = ContactForm()
 
