@@ -5,47 +5,89 @@
     <meta charset="utf-8" />
     <title>{% block title %}Football Shirt Emporium{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Football Shirt Emporium - Your favourite classic football shirts" />
-    <meta name="keywords" content="football, shirt, retro, classic, vintage, soccer, kit" />
+    <meta
+      name="description"
+      content="Football Shirt Emporium - Your favourite classic football shirts"
+    />
+    <meta
+      name="keywords"
+      content="football, shirt, retro, classic, vintage, soccer, kit"
+    />
 
     <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicons/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicons/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicons/favicon-16x16.png' %}">
-    <!-- Font-->
-     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- css -->
-    <link rel="preload" href="{% static 'css/style.css' %}" as="style" onload="this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="{% static 'css/style.css' %}"></noscript>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="{% static 'favicons/apple-touch-icon.png' %}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="{% static 'favicons/favicon-32x32.png' %}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="{% static 'favicons/favicon-16x16.png' %}"
+    />
 
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS (preload to avoid render blocking) -->
+    <link
+      rel="preload"
+      href="{% static 'css/style.css' %}"
+      as="style"
+      onload="this.rel='stylesheet'"
+    />
+    <noscript>
+      <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    </noscript>
   </head>
 
   <body>
     <!-- HEADER -->
     <header class="site-header">
       <div class="container nav">
-    <!-- Brand -->
-    <a href="{% url 'home' %}" class="brand">
-      <img
-        src="{% static 'img/FSElogo.webp' %}"
-        alt="Football Shirt Emporium logo"
-        class="brand__logo"
-        width="128" height="128">    <!-- ADDED attributes -->
-      <span class="brand__text">Football Shirt Emporium</span>
-    </a>
-
+        <!-- Brand -->
+        <a href="{% url 'home' %}" class="brand">
+          <img
+            src="{% static 'img/FSElogo.webp' %}"
+            alt="Football Shirt Emporium logo"
+            class="brand__logo"
+            width="128"
+            height="128"
+          />
+          <span class="brand__text">Football Shirt Emporium</span>
+        </a>
 
         <!-- Mobile toggle -->
         <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false">
           <span class="sr-only">Menu</span>
           <!-- Hamburger icon -->
           <svg class="icon-hamburger" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path
+              d="M3 6h18M3 12h18M3 18h18"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
           </svg>
           <!-- Close icon -->
           <svg class="icon-close" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M6 6l12 12M18 6l-12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path
+              d="M6 6l12 12M18 6l-12 12"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
           </svg>
         </button>
 
@@ -57,19 +99,30 @@
 
           <form action="{% url 'shop:search' %}" method="get" class="nav-search" role="search">
             <label for="nav-q" class="sr-only">Search</label>
-            <input id="nav-q" type="search" name="q" placeholder="Search shirts…" value="{{ request.GET.q }}" />
+            <input
+              id="nav-q"
+              type="search"
+              name="q"
+              placeholder="Search shirts…"
+              value="{{ request.GET.q }}"
+            />
           </form>
 
           {% if request.user.is_authenticated %}
             <a href="{% url 'accounts:account' %}">My account</a>
-            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Log out</a>
-            <form id="logout-form" action="{% url 'logout' %}" method="post" hidden>{% csrf_token %}</form>
+            <a
+              href="#"
+              onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+              >Log out</a
+            >
+            <form id="logout-form" action="{% url 'logout' %}" method="post" hidden>
+              {% csrf_token %}
+            </form>
           {% else %}
             <a href="{% url 'login' %}?next={{ request.path }}">Log in</a>
             <a href="{% url 'accounts:register' %}">Register</a>
           {% endif %}
         </nav>
-
 
         <!-- CART -->
         <div class="cart" style="margin-left: 16px;">
@@ -77,8 +130,7 @@
             {% if total_items > 0 %}
               Your cart:
               <a href="{% url 'cart:cart_detail' %}">
-                {{ total_items }} item{{ total_items|pluralize }},
-                £{{ cart.get_total_price }}
+                {{ total_items }} item{{ total_items|pluralize }}, £{{ cart.get_total_price }}
               </a>
             {% elif not order %}
               Your cart is empty.
@@ -96,7 +148,9 @@
             src="{% static 'img/hero.webp' %}"
             alt="Selection of classic retro football shirts"
             fetchpriority="high"
-            width="1290" height="860">                <!-- ADDED attributes -->
+            width="1290"
+            height="860"
+          />
         </div>
         <div class="hero__inner">
           <h1>Nostalgia. Your Way.</h1>
@@ -120,7 +174,9 @@
     </main>
 
     <footer class="site-footer">
-      <div class="container">© {{ now|date:"Y" }} Football Shirt Emporium by Daniel Kepinski</div>
+      <div class="container">
+        © {{ now|date:"Y" }} Football Shirt Emporium by Daniel Kepinski
+      </div>
     </footer>
 
     <!-- Mobile menu toggle -->
