@@ -1,0 +1,7 @@
+{% extends "shop/base.html" %}
+{% block title %}Payment canceled{% endblock %}
+{% block content %}
+  <h1>Payment canceled</h1>
+  <p>No charge was made. You can try again when you’re ready.</p>
+  <p><a class="btn btn--ghost" href="{% url 'cart:cart_detail' %}">Back to cart</a></p>
+{% endblock %}

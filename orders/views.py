@@ -1,4 +1,6 @@
+# orders/views.py
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.staticfiles import finders
 from django.http import HttpResponse, HttpResponseServerError
@@ -12,20 +14,30 @@ from .tasks import order_created
 
 
 def order_create(request):
+    """
+    Create an order from the current cart.
+    - Works for guest users (no login required).
+    - If user is authenticated, attach the user to the order.
+    - Stores order_id in session for the payment step.
+    """
     cart = Cart(request)
 
-    if not cart:
+    # If cart is empty, bounce back to the cart page.
+    if not cart:  # Cart.__len__ == 0 => falsy
         return redirect("cart:cart_detail")
 
     if request.method == "POST":
         form = OrderCreateForm(request.POST)
         if form.is_valid():
+            # Create order
             order = form.save()
 
+            # Attach user if logged in (guest checkout otherwise)
             if request.user.is_authenticated:
                 order.user = request.user
                 order.save(update_fields=["user"])
 
+            # Persist line items
             for item in cart:
                 OrderItem.objects.create(
                     order=order,
@@ -34,14 +46,21 @@ def order_create(request):
                     quantity=item["quantity"],
                 )
 
+            # Clear cart now that order is created
             cart.clear()
 
+            # Send confirmation email/task (sync in DEBUG, async in prod)
             if settings.DEBUG:
                 order_created(order.id)
             else:
                 order_created.delay(order.id)
 
+            # Remember this order for the payment step
             request.session["order_id"] = order.id
+
+            # Friendly message shown on the payment/process page
+            messages.info(request, "Almost there — please complete payment.")
+
             return redirect("payment:process")
     else:
         form = OrderCreateForm()
@@ -57,6 +76,7 @@ def admin_order_detail(request, order_id):
 
 @staff_member_required
 def admin_order_pdf(request, order_id):
+    # Import here so local environments without WeasyPrint don't break startup
     try:
         import weasyprint
     except Exception as e:
