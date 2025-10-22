@@ -27,7 +27,7 @@ def register(request):
             return redirect("accounts:dashboard")  # or wherever you want
     else:
         form = UserCreationForm()
-    return render(request, "accounts/register.html", {"form": form})
+    return render(request, "accounts\templates\registration\register.html", {"form": form})
 
 @login_required
 def dashboard(request):
