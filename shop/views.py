@@ -46,7 +46,7 @@ def contact(request):
     else:
         form = ContactForm()
 
-    return render(request, "shop:contact.html", {"form": form})
+    return render(request, "shop/contact.html", {"form": form})
 
 
 def product_list(request, category_slug=None, team_slug=None):
