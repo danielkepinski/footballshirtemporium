@@ -104,7 +104,23 @@ a{ color: inherit; text-decoration: none; }
   pointer-events: auto;
   border-bottom: 1px solid #eee;
 }
-.menu:not(.open) a { display: none; }
+.menu:not(.open){
+  visibility: hidden;
+  pointer-events: none;
+  border-bottom: 0;
+  transform: translateY(-110%);
+}
+.menu.open{
+  transform: translateY(0);
+  visibility: visible;
+  pointer-events: auto;
+  border-bottom: 1px solid #eee;
+}
+
+/* Only hide links when in mobile drawer mode */
+@media (max-width: 800px){
+  .menu:not(.open) a { display: none; }
+}
 
 .menu a{
   text-transform:uppercase; letter-spacing:.06em; font-weight:700;
