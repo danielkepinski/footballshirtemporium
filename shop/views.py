@@ -103,17 +103,24 @@ def product_detail(request, id, slug):
 
 def search(request):
     q = (request.GET.get("q") or "").strip()
-    products = Product.objects.filter(available=True)
+    products = Product.objects.none()
+
     if q:
-        products = products.filter(
+        products = Product.objects.filter(
             Q(name__icontains=q) |
             Q(description__icontains=q) |
-            Q(category__name__icontains=q)
-        )
+            Q(category__name__icontains=q) |
+            Q(team__name__icontains=q)
+        ).filter(available=True).select_related("category", "team")
 
-    return render(request, "shop/search.html", {
-        "q": q,
-        "products": products,
-        "results_count": products.count(),
-    },
+    categories = Category.objects.all()
+
+    return render(
+        request,
+        "shop/search.html",
+        {
+            "q": q,
+            "products": products,
+            "categories": categories,
+        },
     )
