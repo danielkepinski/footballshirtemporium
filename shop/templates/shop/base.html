@@ -12,9 +12,12 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicons/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicons/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicons/favicon-16x16.png' %}">
+    <!-- Font-->
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- css -->
-     <link rel="preload" href="{% static 'css/style.css' %}" as="style" onload="this.rel='stylesheet'">
-     <noscript><link rel="stylesheet" href="{% static 'css/style.css' %}"></noscript>
+    <link rel="preload" href="{% static 'css/style.css' %}" as="style" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{% static 'css/style.css' %}"></noscript>
 
   </head>
 
@@ -22,11 +25,16 @@
     <!-- HEADER -->
     <header class="site-header">
       <div class="container nav">
-        <!-- Brand -->
-        <a href="{% url 'home' %}" class="brand">
-          <img src="{% static 'img/FSElogo.webp' %}" alt="Football Shirt Emporium logo" class="brand__logo">
-          <span class="brand__text">Football Shirt Emporium</span>
-        </a>
+    <!-- Brand -->
+    <a href="{% url 'home' %}" class="brand">
+      <img
+        src="{% static 'img/FSElogo.webp' %}"
+        alt="Football Shirt Emporium logo"
+        class="brand__logo"
+        width="128" height="128">    <!-- ADDED attributes -->
+      <span class="brand__text">Football Shirt Emporium</span>
+    </a>
+
 
         <!-- Mobile toggle -->
         <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false">
@@ -84,7 +92,11 @@
     {% if show_hero %}
       <section class="hero">
         <div class="hero__media">
-          <img src="{% static 'img/hero.webp' %}" alt="Selection of classic retro football shirts" fetchpriority="high">
+          <img
+            src="{% static 'img/hero.webp' %}"
+            alt="Selection of classic retro football shirts"
+            fetchpriority="high"
+            width="1290" height="860">                <!-- ADDED attributes -->
         </div>
         <div class="hero__inner">
           <h1>Nostalgia. Your Way.</h1>

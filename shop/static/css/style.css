@@ -71,18 +71,60 @@ a{ color: inherit; text-decoration: none; }
 .brand__logo{
   display:block;
   height:128px;
-  width:128px;
+  width:128px;     /* fixed size prevents CLS */
 }
 .brand__text{
   line-height:1;
   color:inherit;
 }
-.menu{ display:flex; gap:20px; }
+
+/* ——— MOBILE-FIRST MENU (prevents header jump) ——— */
+.menu {
+  position: fixed;
+  inset: 56px 0 auto 0;        /* sits under header */
+  background: #ffffff;
+  transform: translateY(-110%);
+  transition: transform 180ms ease-out;
+  z-index: 50;
+
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem 1rem;
+}
+.menu:not(.open){
+  visibility: hidden;
+  pointer-events: none;
+  border-bottom: 0;
+  transform: translateY(-110%);
+}
+.menu.open{
+  transform: translateY(0);
+  visibility: visible;
+  pointer-events: auto;
+  border-bottom: 1px solid #eee;
+}
+.menu:not(.open) a { display: none; }
 .menu a{
   text-transform:uppercase; letter-spacing:.06em; font-weight:700;
   padding:8px 6px; border-radius:8px;
 }
 .menu a:hover{ background:#f8f8f8; }
+
+/* DESKTOP MENU OVERRIDE */
+@media (min-width: 801px){
+  .menu {
+    position: static;
+    transform: none;
+    visibility: visible;
+    pointer-events: auto;
+    border: 0;
+
+    display: flex;
+    gap: 20px;
+    padding: 0;
+  }
+  .menu a { display: inline-block; }
+}
 
 /* contact link */
 .messages { margin: 12px 0; }
@@ -95,8 +137,6 @@ a{ color: inherit; text-decoration: none; }
 .nav-search { display:inline-flex; align-items:center; margin-left:12px; }
 .nav-search input { padding:6px 8px; border:1px solid #ccc; border-radius:6px; min-width:180px; }
 .search-form { margin: 12px 0; display:flex; gap:8px; }
-
-
 
 /* logout button */
 .menu .logout-form { display: inline; margin: 0; }
@@ -146,14 +186,11 @@ a{ color: inherit; text-decoration: none; }
   padding: clamp(24px, 5vw, 56px) 0;
   text-align:center;
 }
-.hero__media{
-  /* keep the media block from collapsing while image loads */
-  display:block;
-}
+.hero__media{ display:block; }
 .hero__media img{
   width:100%;
   height: auto;
-  aspect-ratio: 1290 / 860;
+  aspect-ratio: 1290 / 860;  /* reserves hero space to prevent CLS */
   object-fit: cover;
   border-radius: 12px;
   box-shadow: var(--shadow);
@@ -164,9 +201,6 @@ a{ color: inherit; text-decoration: none; }
   font-weight: 900; letter-spacing:.02em;
 }
 .hero p{ color: var(--muted); margin:0 0 22px; }
-
-
-
 
 /* Product grid */
 .grid{
@@ -310,55 +344,9 @@ table.cart td.controls form{
 @media (max-width: 800px){
   /* general layout tweaks */
   .container.product-layout { grid-template-columns: 1fr; gap: 16px; }
-  .menu { gap: 12px; }
-  .hero { padding: 32px 0; object-fit: cover; }
 
   /* show the hamburger on mobile, hide inline links initially */
   .nav-toggle { display: inline-block; }
-
-  /* Off-canvas style menu  */
-  .menu {
-    position: fixed;
-    inset: 56px 0 auto 0;        /* below ~56px header */
-    background: #ffffff;
-    transform: translateY(-110%);
-    transition: transform 180ms ease-out;
-    z-index: 50;
-
-    /* stack links vertically on mobile */
-    display: grid;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem 1rem;
-  }
-
-  /* Hide any trace when closed (prevents the thin white line) */
-  .menu:not(.open){
-    visibility: hidden;
-    pointer-events: none;
-    border-bottom: 0;
-    transform: translateY(-110%);
-  }
-
-  /* Only show border when the drawer is open */
-  .menu.open{
-    transform: translateY(0);
-    visibility: visible;
-    pointer-events: auto;
-    border-bottom: 1px solid #eee;
-  }
-
-  /* hide links entirely when menu is closed */
-  .menu:not(.open) a { display: none; }
-
-  /* Make links full-width tap targets (includes the logout pseudo-link) */
-  .menu a,
-  .menu .as-link {
-    display: block;
-    padding: 10px 6px;
-    border-radius: 8px;
-    width: 100%;
-    text-align: left;
-  }
 
   /* Cart table tweaks on tablets */
   table.cart td.controls { display:block; white-space:normal; }
@@ -375,46 +363,24 @@ table.cart td.controls form{
     overflow-x:auto; 
     white-space:nowrap; 
   }
-   table.cart th,
-   table.cart td{
-    white-space: nowrap;   /* prevent wrapping inside cells */
-  }
-  /* Lay out any form inside a cart cell in one row */
+  table.cart th,
+  table.cart td{ white-space: nowrap; }
   table.cart td form{
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: nowrap;     /* never wrap the select + update */
+    display: flex; align-items: center; gap: 6px; flex-wrap: nowrap;
   }
-  /* Keep the quantity select from getting too tiny */
-  table.cart td form select{
-    min-width: 64px;
-  }
-  /* Make the small action buttons compact */
+  table.cart td form select{ min-width: 64px; }
   table.cart td form input[type="submit"],
   table.cart td .btn,
   table.cart td button{
-    padding: 6px 10px;
-    font-size: 12px;
-    line-height: 1;
+    padding: 6px 10px; font-size: 12px; line-height: 1;
   }
-  table.cart td.controls{
-    white-space: normal;                 /* allow wrapping */
-  }
+  table.cart td.controls{ white-space: normal; }
   table.cart td.controls .cart-actions{
-    display: flex;
-    flex-direction: column;              /* stack vertically */
-    align-items: stretch;
-    gap: .5rem;
+    display: flex; flex-direction: column; align-items: stretch; gap: .5rem;
   }
-  table.cart td.controls .cart-actions form{
-    display: block;
-    width: 100%;
-  }
+  table.cart td.controls .cart-actions form{ display: block; width: 100%; }
   table.cart td.controls .cart-actions form button,
-  table.cart td.controls .cart-actions form input[type="submit"]{
-    width: 100%;                          /* full-width tap targets */
-  }
+  table.cart td.controls .cart-actions form input[type="submit"]{ width: 100%; }
   .site-header .menu { gap: 10px; }
   .cart-actions { justify-content: stretch; }
 }
