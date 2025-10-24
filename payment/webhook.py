@@ -101,3 +101,8 @@ def stripe_webhook(request):
     
 
     return HttpResponse(status=200)
+
+
+logger.info("Stripe webhook received: %s", event["type"])
+...
+logger.info("Marking order %s as paid (pi=%s)", order_id, session.get("payment_intent"))
