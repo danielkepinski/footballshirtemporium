@@ -23,7 +23,8 @@ def payment_process(request):
     # stripe.api_version = settings.STRIPE_API_VERSION
 
     if request.method == "POST":
-        success_url = request.build_absolute_uri(reverse("payment:completed"))
+        success_url = request.build_absolute_uri(reverse("payment:completed")
+        ) + "?session_id={CHECKOUT_SESSION_ID}"
         cancel_url = request.build_absolute_uri(reverse("payment:canceled"))
         CURRENCY = getattr(settings, "STRIPE_CURRENCY", "gbp")
 
