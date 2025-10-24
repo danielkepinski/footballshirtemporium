@@ -1,12 +1,15 @@
 {% extends "shop/base.html" %}
-{% block title %}Payment completed{% endblock %}
+{% block title %}Thank you!{% endblock %}
 {% block content %}
   <h1>Thank you!</h1>
-  <p>Your order #{{ order.id }} has been received.</p>
-  {% if order.paid %}
-    <p>Status: <strong>Paid</strong></p>
+
+  {% if order %}
+    <p>Your order #{{ order.id }} has been received.</p>
+    <p>Status: {% if order.paid %}Paid & confirmed{% else %}Pending confirmation{% endif %}</p>
   {% else %}
+    <p>Your order has been received.</p>
     <p>Status: Pending confirmation</p>
   {% endif %}
-  <p><a class="btn btn--ghost" href="{% url 'shop:product_list' %}">Continue shopping</a></p>
+
+  <p class="mt-3"><a class="btn btn--ghost" href="{% url 'shop:product_list' %}">Continue shopping</a></p>
 {% endblock %}
