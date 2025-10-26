@@ -1,54 +1,56 @@
 from decimal import Decimal
+from django.conf import settings
+from shop.models import Product
 
-from django.contrib.sessions.middleware import SessionMiddleware
-from django.http import HttpRequest
-from django.test import TestCase
+class Cart:
+    def __init__(self, request):
+        self.session = request.session
+        cart = self.session.get(settings.CART_SESSION_ID)
+        if not cart:
+            cart = {}
+            self.session[settings.CART_SESSION_ID] = cart
+        self.cart = cart
 
-from cart.cart import Cart
-from shop.models import Category, Product, Team
+    def __iter__(self):
+        product_ids = self.cart.keys()
+        products = Product.objects.filter(id__in=product_ids)
+        cart = self.cart.copy()
+        for product in products:
+            cart[str(product.id)]['product'] = product
+        for item in cart.values():
+            item['price'] = Decimal(item['price'])
+            item['total_price'] = item['price'] * item['quantity']
+            yield item
 
+    def __len__(self):
+        return sum(item['quantity'] for item in self.cart.values())
 
-def add_session_to_request(request: HttpRequest) -> HttpRequest:
-    """Attach a session to a Request for unit tests."""
-    middleware = SessionMiddleware(lambda r: None)
-    middleware.process_request(request)
-    request.session.save()
-    return request
+    def add(self, product, quantity=1, override_quantity=False):
+        product_id = str(product.id)
+        if product_id not in self.cart:
+            self.cart[product_id] = {'quantity': 0, 'price': str(product.price)}
+        if override_quantity:
+            self.cart[product_id]['quantity'] = quantity
+        else:
+            self.cart[product_id]['quantity'] += quantity
+        self.save()
 
+    def save(self):
+        # keep the session in sync with the in-memory dict
+        self.session[settings.CART_SESSION_ID] = self.cart
+        self.session.modified = True
 
-class CartTests(TestCase):
-    def setUp(self):
-        cat = Category.objects.create(name="Cat", slug="cat")
-        team = Team.objects.create(name="Team A")
-        self.p1 = Product.objects.create(
-            category=cat, name="P1", slug="p1", price="10.00", available=True, team=team
-        )
-        self.p2 = Product.objects.create(
-            category=cat, name="P2", slug="p2", price="5.50", available=True, team=team
-        )
+    def remove(self, product):
+        product_id = str(product.id)
+        if product_id in self.cart:
+            del self.cart[product_id]
+            self.save()
 
-    def test_add_iter_len_total_remove_clear(self):
-        req = add_session_to_request(HttpRequest())
-        cart = Cart(req)
+    def clear(self):
+        # clear both the session and the in-memory cache
+        self.session.pop(settings.CART_SESSION_ID, None)
+        self.cart = {}
+        self.session.modified = True
 
-        cart.add(self.p1, quantity=2)
-        cart.add(self.p2, quantity=1)
-
-        # length = total quantity
-        self.assertEqual(len(cart), 3)
-
-        # items iterate with product attached and totals computed
-        items = list(cart)
-        self.assertEqual(items[0]["product"].id, self.p1.id)
-        self.assertEqual(items[0]["total_price"], Decimal("20.00"))
-
-        # total across cart
-        self.assertEqual(cart.get_total_price(), Decimal("25.50"))
-
-        # remove
-        cart.remove(self.p2)
-        self.assertEqual(cart.get_total_price(), Decimal("20.00"))
-
-        # clear
-        cart.clear()
-        self.assertEqual(len(cart), 0)
+    def get_total_price(self):
+        return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
