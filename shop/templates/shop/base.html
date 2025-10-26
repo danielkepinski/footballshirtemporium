@@ -15,6 +15,9 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- font awesome-->
+     <script src="https://kit.fontawesome.com/d8f771d863.js" crossorigin="anonymous"></script>
   </head>
 
   <body>
@@ -123,7 +126,15 @@
     </main>
 
     <footer class="site-footer">
-      <div class="container">© {{ now|date:"Y" }} Football Shirt Emporium by Daniel Kepinski</div>
+      <div class="container">
+        © {{ now|date:"Y" }} Football Shirt Emporium by Daniel Kepinski
+        <a href="https://github.com/danielkepinski"
+          class="footer-icon"
+          aria-label="Daniel Kepinski on GitHub"
+          target="_blank" rel="noopener noreferrer">
+          <i class="fa-brands fa-github"></i>
+        </a>
+      </div>
     </footer>
 
     <!-- Mobile menu toggle -->
