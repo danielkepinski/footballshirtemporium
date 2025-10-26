@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
 from orders.models import Order
+from .tasks import payment_completed as send_paid_email  # avoid name clash with view
 
 
 def payment_process(request):
@@ -18,6 +19,8 @@ def payment_process(request):
 
     # Configure Stripe
     stripe.api_key = (settings.STRIPE_SECRET_KEY or "").strip()
+    # Optional: lock API version
+    # stripe.api_version = settings.STRIPE_API_VERSION
 
     if request.method == "POST":
         success_url = (
@@ -30,7 +33,7 @@ def payment_process(request):
         # Build line items
         line_items = []
         for item in order.items.all():
-            unit_amount = int(Decimal(item.price) * 100)  # convert pounds to pence
+            unit_amount = int(Decimal(item.price) * 100)  # pounds → pence
             line_items.append(
                 {
                     "price_data": {
@@ -55,6 +58,7 @@ def payment_process(request):
         try:
             session = stripe.checkout.Session.create(**session_data)
 
+            # Save a stable Stripe reference early (PI id if available, else session id)
             stripe_identifier = getattr(session, "payment_intent", None) or session.id
             if stripe_identifier and stripe_identifier != order.stripe_id:
                 order.stripe_id = stripe_identifier
@@ -75,7 +79,7 @@ def payment_process(request):
         # Only redirect after successful Session creation (POST branch)
         return redirect(session.url, code=303)
 
-    # GET render summary and a POST form button
+    # GET → render summary and a POST form button
     return render(
         request,
         "payment/process.html",
@@ -88,33 +92,60 @@ def payment_process(request):
 
 def payment_completed(request):
     """
-    Render the thank-you page with a real order number.
-    Strategy:
-      1) Use order_id saved in the session during order_create.
-      2) If missing, use ?session_id=... from Stripe success redirect
-         and retrieve Checkout Session to recover client_reference_id.
+    Thank-you page.
+    Primary: webhook marks orders as paid.
+    Fallback: if we have a session_id, retrieve the Checkout Session from Stripe;
+              if it's paid, mark the order as paid here too.
     """
-    order = None
+    stripe.api_key = (settings.STRIPE_SECRET_KEY or "").strip()
 
-    # 1) Try the id we stored in the session
+    order = None
     order_id = request.session.get("order_id")
 
-    # 2) Fallback via Stripe Checkout Session id
-    if not order_id:
-        session_id = request.GET.get("session_id")
-        if session_id and settings.STRIPE_SECRET_KEY:
-            try:
-                stripe.api_key = (settings.STRIPE_SECRET_KEY or "").strip()
-                s = stripe.checkout.Session.retrieve(session_id)
-                order_id = s.get("client_reference_id") or (s.get("metadata") or {}).get("order_id")
-            except Exception:
-                order_id = None
+    # If we lost the session, recover via the Checkout Session
+    session_id = request.GET.get("session_id")
+    session_obj = None
+
+    if not order_id and session_id:
+        try:
+            session_obj = stripe.checkout.Session.retrieve(session_id)
+            order_id = session_obj.get("client_reference_id") or (
+                session_obj.get("metadata") or {}
+            ).get("order_id")
+        except Exception:
+            order_id = None
 
     if order_id:
         try:
             order = Order.objects.get(id=order_id)
         except Order.DoesNotExist:
             order = None
+
+    # Fallback: if webhook hasn’t updated yet, verify with Stripe and mark paid
+    if order and not order.paid and session_id:
+        try:
+            session_obj = session_obj or stripe.checkout.Session.retrieve(session_id)
+            if session_obj.get("payment_status") == "paid":
+                pi = session_obj.get("payment_intent")
+
+                changed = False
+                if not order.paid:
+                    order.paid = True
+                    changed = True
+                if pi and order.stripe_id != pi:
+                    order.stripe_id = pi
+                    changed = True
+                if changed:
+                    order.save(update_fields=["paid", "stripe_id"])
+
+                    # Send the "paid" email once
+                    if getattr(settings, "CELERY_TASK_ALWAYS_EAGER", False) or getattr(settings, "DEBUG", False):
+                        send_paid_email(order.id)
+                    else:
+                        send_paid_email.delay(order.id)
+        except Exception:
+            # If Stripe retrieval fails, just render the page; webhook may still update later
+            pass
 
     return render(request, "payment/completed.html", {"order": order})
 
