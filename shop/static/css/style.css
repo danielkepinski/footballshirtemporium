@@ -143,9 +143,9 @@ a{
   display: inline-block;
 }
 
+
 /* DESKTOP MENU OVERRIDE */
 @media (min-width: 801px){
-  /* make the nav inline and visible */
   .menu{
     position: static !important;
     transform: none !important;
@@ -155,23 +155,23 @@ a{
     display: flex !important;
     gap: 20px;
     padding: 0;
-  }}
+  }
   .menu a{
     display: inline-block !important;
   }
-
   /* hide burger on desktop */
   .nav-toggle {
-  display: none !important; /* hidden on desktop */
-  background: none;
-  border: 0;
-  padding: 0.25rem;
-  cursor: pointer;
-  line-height: 0;
-
-  position: relative;
-  z-index: 1001; /* above header & drawer */
+    display: none !important;
+    background: none;
+    border: 0;
+    padding: 0.25rem;
+    cursor: pointer;
+    line-height: 0;
+    position: relative;
+    z-index: 1001;
+  }
 }
+
 
 /* contact link */
 .messages { margin: 12px 0; }
@@ -371,12 +371,11 @@ table.cart td.controls form{ display:inline-block; }
 /* ====== Responsive layout ====== */
 
 /* Show hamburger on mobile */
-  @media (max-width: 800px){
-  .nav-toggle { display: inline-block; 
-  }
+@media (max-width: 800px){
+  .nav-toggle { display: inline-block; }
   .menu{
     position: fixed;
-    inset: var(--header-h) 0 auto 0; /* sits under header on mobile */
+    inset: var(--header-height) 0 auto 0; /* <-- fix typo here */
     z-index: 900;
   }
 }
