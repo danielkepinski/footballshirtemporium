@@ -137,6 +137,22 @@
       </div>
     </footer>
 
+       <!-- Set CSS var to actual sticky header height -->
+    <script>
+      (function () {
+        const header = document.querySelector('.site-header');
+        if (header) {
+          const h = header.getBoundingClientRect().height;
+          document.documentElement.style.setProperty('--header-height', h + 'px');
+        }
+        // Optional: keep it correct on resize/orientation change
+        window.addEventListener('resize', () => {
+          const h = header.getBoundingClientRect().height;
+          document.documentElement.style.setProperty('--header-height', h + 'px');
+        });
+      })();
+    </script>
+
     <!-- Mobile menu toggle -->
     <script>
       (function () {
@@ -151,3 +167,4 @@
     </script>
   </body>
 </html>
+
