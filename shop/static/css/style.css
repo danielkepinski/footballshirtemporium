@@ -159,7 +159,7 @@ a{
 
   /* hide burger on desktop */
   .nav-toggle {
-  display: none !important; /* hidden on desktop */
+  display: none; /* hidden on desktop */
   background: none;
   border: 0;
   padding: 0.25rem;
@@ -208,6 +208,8 @@ a{
 .nav-toggle[aria-expanded="true"] .icon-hamburger { display: none; }
 .nav-toggle[aria-expanded="true"] .icon-close { display: inline; }
 .icon-hamburger, .icon-close { width: 28px; height: 28px; }
+
+
 
 /* buttons */
 .btn{
