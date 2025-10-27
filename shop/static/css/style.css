@@ -9,6 +9,7 @@
   --accent-2: #f43f5e;     /* subtle red for sale badges / errors */
   --radius: 12px;
   --shadow: 0 6px 24px rgba(17,17,17,0.06);
+  --header-height: 96px;   /* drawer offset on mobile */
 }
 
 /* typography */
@@ -19,12 +20,20 @@ body{
   font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
   color: var(--text);
   background: var(--bg);
-  -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
-img{ max-width:100%; display:block; }
-a{ color: inherit; text-decoration: none; }
-.container{ width: min(1200px, 92%); margin-inline: auto; }
+img{ 
+  max-width:100%; 
+  display:block; 
+}
+a{ 
+  color: inherit; 
+  text-decoration: none; 
+}
+.container{ 
+  width: min(1200px, 92%); 
+  margin-inline: auto; 
+}
 
 /* ===== Product list layout (sidebar + products) ===== */
 .product-layout{
@@ -96,12 +105,11 @@ a{ color: inherit; text-decoration: none; }
 /* ───── MOBILE FIRST MENU (prevents header jump) ───── */
 .menu {
   position: fixed;
-  inset: var(--header-h) 0 auto 0; /* sits under header on mobile */
+  inset: var(--header-height) 0 auto 0;  /* ↓ start below header */
   background: #ffffff;
   transform: translateY(-110%);
   transition: transform 180ms ease-out;
-  z-index: 900; /* below header/toggle, above content */
-
+  z-index: 900;                           /* above page content */
   display: grid;
   gap: 0.5rem;
   padding: 0.75rem 1rem 1rem;
@@ -123,12 +131,14 @@ a{ color: inherit; text-decoration: none; }
 @media (max-width: 800px){
   .menu:not(.open) a { display: none; }
 }
-
 .menu a{
   text-transform:uppercase; letter-spacing:.06em; font-weight:700;
   padding:8px 6px; border-radius:8px;
 }
-.menu a:hover{ background:#f8f8f8; }
+.menu a:hover{ background:#f8f8f8; 
+}
+.brand__logo{ width:40px; height:40px; }   /* was 128px */
+.site-header{ min-height:56px; padding: 10px 12px; }
 
 /* DESKTOP MENU OVERRIDE */
 @media (min-width: 801px){
@@ -142,7 +152,7 @@ a{ color: inherit; text-decoration: none; }
     display: flex !important;
     gap: 20px;
     padding: 0;
-  }
+  }}
   .menu a{
     display: inline-block !important;
   }
