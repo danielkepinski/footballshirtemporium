@@ -32,3 +32,7 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
+from myshop import views as core_views
+handler404 = core_views.custom_404
+handler500 = core_views.custom_500    
