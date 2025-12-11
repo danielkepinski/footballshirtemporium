@@ -11,15 +11,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- Security / core ---
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-only-insecure-key-change-me")
-DEBUG = config("DEBUG", cast=bool, default=True)
 
-HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME = footballshirtemporium-d2f750f715d7", "").strip()
+# In production set DEBUG=False via environment variable
+DEBUG = config("DEBUG", cast=bool, default=False)
+
+# Name of the Heroku app, e.g. "footballshirt-new"
+HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME", "").strip()
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1,localhost").split(",")
 if HEROKU_APP_NAME:
     ALLOWED_HOSTS.append(f"{HEROKU_APP_NAME}.herokuapp.com")
 else:
-    # known app hostnames (fallback)
+    # fallback hostnames if HEROKU_APP_NAME is not set
     ALLOWED_HOSTS += [
         "footballshirt-emporium.herokuapp.com",
         "footballshirtemporium-d2f750f715d7.herokuapp.com",
