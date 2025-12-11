@@ -35,4 +35,4 @@ if settings.DEBUG:
     
 from myshop import views as core_views
 handler404 = core_views.custom_404
-handler500 = core_views.custom_500    
+handler500 = core_views.custom_500
