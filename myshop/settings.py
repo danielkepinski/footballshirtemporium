@@ -22,7 +22,7 @@ else:
     # known app hostnames (fallback)
     ALLOWED_HOSTS += [
         "footballshirt-emporium.herokuapp.com",
-        "footballshirt-emporium-05431c39ab7e.herokuapp.com",
+        "footballshirtemporium-d2f750f715d7.herokuapp.com",
     ]
 
 # CSRF trusted origins
@@ -34,7 +34,7 @@ elif HEROKU_APP_NAME:
 else:
     CSRF_TRUSTED_ORIGINS = [
         "https://footballshirt-emporium.herokuapp.com",
-        "https://footballshirt-emporium-05431c39ab7e.herokuapp.com",
+        "https://footballshirtemporium-d2f750f715d7.herokuapp.com",
     ]
 
 # Security settings for production
