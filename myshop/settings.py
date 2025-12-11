@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-only-insecure-key-change-me")
 
 # In production set DEBUG=False via environment variable
-DEBUG = config("DEBUG", cast=bool, default=False)
+DEBUG = config("DEBUG", cast=bool, default=True)
 
 # Name of the Heroku app, e.g. "footballshirt-new"
 HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME", "").strip()
