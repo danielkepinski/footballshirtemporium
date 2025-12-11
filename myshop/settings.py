@@ -110,6 +110,7 @@ if os.getenv("DATABASE_URL"):
         os.environ["DATABASE_URL"], conn_max_age=600, ssl_require=True
     )
 
+
 # --- Internationalization ---
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
