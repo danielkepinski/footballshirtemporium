@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-only-insecure-key-change-me")
 DEBUG = config("DEBUG", cast=bool, default=True)
 
-HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME", "").strip()
+HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME = footballshirtemporium-d2f750f715d7", "").strip()
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1,localhost").split(",")
 if HEROKU_APP_NAME:
@@ -109,7 +109,6 @@ if os.getenv("DATABASE_URL"):
     DATABASES["default"] = dj_database_url.parse(
         os.environ["DATABASE_URL"], conn_max_age=600, ssl_require=True
     )
-
 
 # --- Internationalization ---
 LANGUAGE_CODE = "en-us"
