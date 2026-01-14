@@ -212,5 +212,3 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 # --- am i responsive ---
 X_FRAME_OPTIONS = "ALLOWALL"
-if not DEBUG:
-    X_FRAME_OPTIONS = "ALLOWALL"
