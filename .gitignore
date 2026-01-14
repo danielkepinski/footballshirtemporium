@@ -27,7 +27,7 @@ develop-eggs/
 # ─── MEDIA / STATIC ──────────────────────────────────────────────────────────
 media/
 staticfiles/
-static/
+
 
 # ─── VIRTUAL ENVIRONMENTS ────────────────────────────────────────────────────
 env/
